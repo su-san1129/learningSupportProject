@@ -31,7 +31,8 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 				.antMatchers("/admin/login", "/admin/adminLogin")
 				.permitAll()
-				.anyRequest().authenticated();
+				.anyRequest()
+				.hasRole("ADMIN");
 		http.formLogin()
 				.loginPage("/admin/login")
 				.loginProcessingUrl("/admin/adminLogin")

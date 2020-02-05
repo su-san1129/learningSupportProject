@@ -26,7 +26,7 @@
       <div class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
         <!-- 背景をグレーに、埋め込んだようなコンポーネント -->
         <div class="well">
-          <form method="post" action="admin_training_list.html" th:action="@{/admin/register_finish}" th:object="${adminRegisterForm}">
+          <form method="post" action="student_training_list.html" th:action="@{/students/register/finish}" th:object="${studentRegisterForm}">
             <fieldset>
               <legend>運営管理者 登録 </legend>
               <p>以下の内容で登録します。</p>
@@ -34,7 +34,6 @@
                 <label for="inputEmail">名前:</label>
                 <p th:text="*{name}">鈴木一郎</p>
                 <input type="hidden" name="name" th:field="*{name}">
-
               </div>
               <div class="form-group">
                 <label for="inputEmail">フリガナ:</label>
@@ -55,7 +54,7 @@
               </div>
             </fieldset>
           </form>
-          <form th:action="@{/admin/register}" th:object="${adminRegisterForm}">
+          <form th:action="@{/students/register}" th:object="${studentRegisterForm}">
             <input type="hidden" name="name" th:field="*{name}">
             <input type="hidden" name="kana" th:field="*{kana}">
             <input type="hidden" name="email" th:field="*{email}">

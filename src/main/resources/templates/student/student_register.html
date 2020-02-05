@@ -26,9 +26,9 @@
       <div class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
         <!-- 背景をグレーに、埋め込んだようなコンポーネント -->
         <div class="well">
-          <form method="post" action="admin_training_list.html" th:action="@{/admin/registerAdmin}" th:object="${adminRegisterForm}">
+          <form method="post" action="student_training_list.html" th:action="@{/students/register/student}" th:object="${studentRegisterForm}">
             <fieldset>
-              <legend>運営管理者 登録 </legend>
+              <legend>受講者 登録 </legend>
               <div class="form-group">
                 <label for="inputName">名前:</label>
                 <label class="control-label" style="color: red" th:errors="*{name}" for="inputError">名前を入力してください</label>
