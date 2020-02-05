@@ -56,7 +56,7 @@ public class AdminRepository {
 			sql.append("kana = :kana, ");
 			sql.append("email = :email, ");
 			sql.append("password = :password, ");
-			sql.append("canShowAllCompany = can_show_all_company ");
+			sql.append("can_show_all_company = :canShowAllCompany ");
 			sql.append("WHERE id = :id");
 		}
 		template.update(sql.toString(), param);

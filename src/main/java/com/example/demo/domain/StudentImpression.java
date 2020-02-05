@@ -2,9 +2,13 @@ package com.example.demo.domain;
 
 public class StudentImpression {
 
+	/** ID */
 	private Integer id;
+	/** 週報ID */
 	private Integer weeklyReportId;
+	/** 受講生名 */
 	private String studentName;
+	/** 内容 */
 	private String content;
 
 	public StudentImpression() {

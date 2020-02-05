@@ -2,17 +2,23 @@ package com.example.demo.domain;
 
 public class Instructor {
 
+	/** ID */
 	private Integer id;
+	/** 名前 */
 	private String name;
+	/** かな */
 	private String kana;
+	/** メールアドレス */
 	private String email;
+	/** パスワード */
 	private String password;
+	/** 所属 */
 	private String affiliation;
+	/** 備考 */
 	private String remarks;
 
 	public Instructor() {
 		super();
-		// TODO 自動生成されたコンストラクター・スタブ
 	}
 
 	public Instructor(Integer id, String name, String kana, String email, String password, String affiliation,
