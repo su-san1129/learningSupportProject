@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>学習サポートシステム</title>
+<link href="../css/bootstrap.css" rel="stylesheet">
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<script type="text/javascript" th:src="@{/js/companies.js}"></script>
+</head>
+<body onload="responsibleCompanies();">
+  <div class="container">
+    <div th:replace="shared/_header"></div>
+
+    <!-- register form -->
+    <div class="row">
+      <div class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
+        <div class="well">
+          <form method="post" action="admin_training_list.html" name="adminEditForm">
+            <fieldset>
+              <legend>運営管理者</legend>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label for="inputName">氏名:</label>
+                    <label class="control-label" style="color: red" for="inputName">氏名を入力してください</label>
+                    <input type="text" id="inputName" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label for="inputEmail">メール</label>
+                    <label class="control-label" style="color: red" for="inputEmail">メールを入力してください</label>
+                    <input type="text" id="inputEmail" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label for="inputPassword">パスワード</label>
+                    <label class="control-label" style="color: red" for="inputPassword">パスワードを入力してください</label>
+                    <input type="password" id="inputPassword" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label for="inputConfirmationPassword">確認用パスワード</label>
+                    <label class="control-label" style="color: red" for="inputConfirmationPassword">確認用パスワードを入力してください</label>
+                    <input type="password" id="inputConfirmationPassword" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label for="inputResponsibleCompany">担当企業</label>
+                  </div>
+                  <div class="col-sm-12">
+                    <label class="radio-inline">
+                      <input type="radio" name="responsibleCompany" checked="checked" onclick="responsibleCompanies();">
+                      全ての企業
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="responsibleCompany" onclick="responsibleCompanies();">
+                      選択する
+                    </label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12 col-sm-8" id="responsibleCompanyBox">
+                    <label class="control-label" style="color: red" for="inputError"> 企業を選択してください</label>
+                    <select name="companySelect" class="form-control" onchange="addCompany();">
+                      <option value="0">選択してください</option>
+                      <option value="1">株式会社AAA</option>
+                      <option value="2">株式会社BBB</option>
+                      <option value="3">株式会社CCCS</option>
+                    </select><br />
+                    <div id="companyList"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <button type="submit" class="btn btn-primary">登録</button>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div th:replace="shared/_footer"></div>
+</body>
+</html>
