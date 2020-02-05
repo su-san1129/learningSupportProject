@@ -1,4 +1,4 @@
-package com.example.demo.security;
+package com.example.demo.security.stundent;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
