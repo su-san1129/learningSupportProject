@@ -13,7 +13,6 @@ public class WeeklyReport {
 
 	public WeeklyReport() {
 		super();
-		// TODO 自動生成されたコンストラクター・スタブ
 	}
 
 	public WeeklyReport(Integer id, LocalDate startDate, String instructorName, String content,

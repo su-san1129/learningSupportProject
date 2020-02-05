@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.api.Database;
+import com.example.demo.domain.Training;
 import com.example.demo.form.StudentRegisterForm;
 import com.example.demo.service.StudentService;
 
@@ -23,6 +27,9 @@ public class StudentController {
 
 	@Autowired
 	private HttpSession session;
+	
+	@Autowired
+	private Database database;
 
 	@GetMapping("/view_daily_report")
 	public String index() {
@@ -77,7 +84,14 @@ public class StudentController {
 	}
 
 	@GetMapping("/training_list")
-	public String trainingList() {
+	public String trainingList(Model model) {
+		List<Training> trainingList = database.trainingList();
+		model.addAttribute("trainings", trainingList);
 		return "student/student_training_list";
+	}
+	
+	@RequestMapping("/register_daily_report")
+	public String registerDailyReport() {
+		return "student/student_register_daily_report";
 	}
 }

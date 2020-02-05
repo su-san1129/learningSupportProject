@@ -1,13 +1,14 @@
-package com.example.demo.domain;
+package com.example.demo.form;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
-public class DailyReport {
+public class DailyReportForm {
 
 	/** ID */
 	private Integer id;
 	/** 日付 */
-	private LocalDate date;
+	private Date date;
 	/** 研修ID */
 	private Integer trainingId;
 	/** 受講生ID */
@@ -22,18 +23,13 @@ public class DailyReport {
 	private Integer aboutInstructor;
 	/** 質問 */
 	private String question;
-	/** 研修 */
-	private Training training;
-	/** 受講生 */
-	private Student student;
 
-	public DailyReport() {
+	public DailyReportForm() {
 		super();
 	}
 
-	public DailyReport(Integer id, LocalDate date, Integer trainingId, Integer studentId, String context,
-			Integer intelligibility, String detailIntelligibillity, Integer aboutInstructor, String question,
-			Training training, Student student) {
+	public DailyReportForm(Integer id, Date date, Integer trainingId, Integer studentId, String context,
+			Integer intelligibility, String detailIntelligibillity, Integer aboutInstructor, String question) {
 		super();
 		this.id = id;
 		this.date = date;
@@ -44,10 +40,11 @@ public class DailyReport {
 		this.detailIntelligibillity = detailIntelligibillity;
 		this.aboutInstructor = aboutInstructor;
 		this.question = question;
-		this.training = training;
-		this.student = student;
 	}
 
+	public LocalDate toLocalDate() {
+		return this.date.toLocalDate();
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -56,11 +53,11 @@ public class DailyReport {
 		this.id = id;
 	}
 
-	public LocalDate getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(LocalDate date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
@@ -120,28 +117,12 @@ public class DailyReport {
 		this.question = question;
 	}
 
-	public Training getTraining() {
-		return training;
-	}
-
-	public void setTraining(Training training) {
-		this.training = training;
-	}
-
-	public Student getStudent() {
-		return student;
-	}
-
-	public void setStudent(Student student) {
-		this.student = student;
-	}
-
 	@Override
 	public String toString() {
-		return "DailyReport [id=" + id + ", date=" + date + ", trainingId=" + trainingId + ", studentId=" + studentId
-				+ ", context=" + context + ", intelligibility=" + intelligibility + ", detailIntelligibillity="
-				+ detailIntelligibillity + ", aboutInstructor=" + aboutInstructor + ", question=" + question
-				+ ", training=" + training + ", student=" + student + "]";
+		return "DailyReportForm [id=" + id + ", date=" + date + ", trainingId=" + trainingId + ", studentId="
+				+ studentId + ", context=" + context + ", intelligibility=" + intelligibility
+				+ ", detailIntelligibillity=" + detailIntelligibillity + ", aboutInstructor=" + aboutInstructor
+				+ ", question=" + question + "]";
 	}
 
 }

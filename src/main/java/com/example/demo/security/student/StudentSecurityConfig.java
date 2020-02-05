@@ -42,7 +42,7 @@ public class StudentSecurityConfig extends WebSecurityConfigurerAdapter {
 				.usernameParameter("email")
 				.passwordParameter("password");
 		http.logout()
-				.logoutRequestMatcher(new AntPathRequestMatcher("students/logout**"))
+				.logoutRequestMatcher(new AntPathRequestMatcher("/students/logout**"))
 				.logoutSuccessUrl("/students/training_list")
 				.deleteCookies("JSESSIONID")
 				.invalidateHttpSession(true);

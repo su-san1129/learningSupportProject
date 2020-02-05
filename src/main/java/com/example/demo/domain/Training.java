@@ -9,9 +9,10 @@ public class Training {
 	private LocalDate startDate;
 	private LocalDate endDate;
 	private String name;
-	private Integer subInstructorId1;
-	private Integer subInstructorId2;
-	private Integer subInstructorId3;
+	private Integer instructorId;
+	private Integer subInstructor1Id;
+	private Integer subInstructor2Id;
+	private Integer subInstructor3Id;
 	private Instructor instructor;
 	private Instructor subInstructor1;
 	private Instructor subInstructor2;
@@ -21,21 +22,21 @@ public class Training {
 
 	public Training() {
 		super();
-		// TODO 自動生成されたコンストラクター・スタブ
 	}
 
-	public Training(Integer id, LocalDate startDate, LocalDate endDate, String name, Integer subInstructorId1,
-			Integer subInstructorId2, Integer subInstructorId3, Instructor instructor, Instructor subInstructor1,
-			Instructor subInstructor2, Instructor subInstructor3, List<TrainingStudent> studentList,
-			List<WeeklyReport> weeklyReport) {
+	public Training(Integer id, LocalDate startDate, LocalDate endDate, String name, Integer instructorId,
+			Integer subInstructor1Id, Integer subInstructor2Id, Integer subInstructor3Id, Instructor instructor,
+			Instructor subInstructor1, Instructor subInstructor2, Instructor subInstructor3,
+			List<TrainingStudent> studentList, List<WeeklyReport> weeklyReport) {
 		super();
 		this.id = id;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.name = name;
-		this.subInstructorId1 = subInstructorId1;
-		this.subInstructorId2 = subInstructorId2;
-		this.subInstructorId3 = subInstructorId3;
+		this.instructorId = instructorId;
+		this.subInstructor1Id = subInstructor1Id;
+		this.subInstructor2Id = subInstructor2Id;
+		this.subInstructor3Id = subInstructor3Id;
 		this.instructor = instructor;
 		this.subInstructor1 = subInstructor1;
 		this.subInstructor2 = subInstructor2;
@@ -76,28 +77,36 @@ public class Training {
 		this.name = name;
 	}
 
-	public Integer getSubInstructorId1() {
-		return subInstructorId1;
+	public Integer getInstructorId() {
+		return instructorId;
 	}
 
-	public void setSubInstructorId1(Integer subInstructorId1) {
-		this.subInstructorId1 = subInstructorId1;
+	public void setInstructorId(Integer instructorId) {
+		this.instructorId = instructorId;
 	}
 
-	public Integer getSubInstructorId2() {
-		return subInstructorId2;
+	public Integer getSubInstructor1Id() {
+		return subInstructor1Id;
 	}
 
-	public void setSubInstructorId2(Integer subInstructorId2) {
-		this.subInstructorId2 = subInstructorId2;
+	public void setSubInstructor1Id(Integer subInstructor1Id) {
+		this.subInstructor1Id = subInstructor1Id;
 	}
 
-	public Integer getSubInstructorId3() {
-		return subInstructorId3;
+	public Integer getSubInstructor2Id() {
+		return subInstructor2Id;
 	}
 
-	public void setSubInstructorId3(Integer subInstructorId3) {
-		this.subInstructorId3 = subInstructorId3;
+	public void setSubInstructor2Id(Integer subInstructor2Id) {
+		this.subInstructor2Id = subInstructor2Id;
+	}
+
+	public Integer getSubInstructor3Id() {
+		return subInstructor3Id;
+	}
+
+	public void setSubInstructor3Id(Integer subInstructor3Id) {
+		this.subInstructor3Id = subInstructor3Id;
 	}
 
 	public Instructor getInstructor() {
@@ -151,10 +160,10 @@ public class Training {
 	@Override
 	public String toString() {
 		return "Training [id=" + id + ", startDate=" + startDate + ", endDate=" + endDate + ", name=" + name
-				+ ", subInstructorId1=" + subInstructorId1 + ", subInstructorId2=" + subInstructorId2
-				+ ", subInstructorId3=" + subInstructorId3 + ", instructor=" + instructor + ", subInstructor1="
-				+ subInstructor1 + ", subInstructor2=" + subInstructor2 + ", subInstructor3=" + subInstructor3
-				+ ", studentList=" + studentList + ", weeklyReport=" + weeklyReport + "]";
+				+ ", instructorId=" + instructorId + ", subInstructor1Id=" + subInstructor1Id + ", subInstructor2Id="
+				+ subInstructor2Id + ", subInstructor3Id=" + subInstructor3Id + ", instructor=" + instructor
+				+ ", subInstructor1=" + subInstructor1 + ", subInstructor2=" + subInstructor2 + ", subInstructor3="
+				+ subInstructor3 + ", studentList=" + studentList + ", weeklyReport=" + weeklyReport + "]";
 	}
 
 }

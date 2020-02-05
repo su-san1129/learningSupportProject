@@ -17,12 +17,16 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav" id="headerMenu">
         <li><a href="student_training_list.html" th:href="@{/students/training_list}">研修コース</a></li>
-        <li><a href="facility_manager_list.html" th:href="@{/admin/facility_manager_list}">運営管理者</a></li>
-        <li><a href="company_list.html" th:href="@{/admin/company_list}">企業(企業担当者)</a></li>
-        <li><a href="instructor_list.html" th:href="@{/admin/instructor_list}">講師</a></li>
+        <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="facility_manager_list.html" th:href="@{/admin/facility_manager_list}">運営管理者</a></li>
+        <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="company_list.html" th:href="@{/admin/company_list}">企業(企業担当者)</a></li>
+        <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="instructor_list.html" th:href="@{/admin/instructor_list}">講師</a></li>
       </ul>
-      <p class="navbar-text navbar-right">
-        <a href="admin_login.html" th:href="@{/admin/login}" class="navbar-link">パスワード変更</a> <a href="student_login.html"
+      <p sec:authorize="hasRole('ROLE_ADMIN')" class="navbar-text navbar-right">
+        <a href="admin_login.html" th:href="@{/admin/login}" class="navbar-link">パスワード変更</a> <a href="admin_login.html" th:href="@{/admin/logout}"
+          class="navbar-link">ログアウト</a>
+      </p>
+      <p sec:authorize="hasRole('ROLE_STUDENT')" class="navbar-text navbar-right">
+        <a href="admin_login.html" th:href="@{/students/login}" class="navbar-link">パスワード変更</a> <a href="student_login.html" th:href="@{/students/logout}"
           class="navbar-link">ログアウト</a>
       </p>
     </div>

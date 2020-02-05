@@ -54,7 +54,6 @@ public class StudentRepository {
 			LOGGER.warn("検索された受講者は存在しません。");
 			return null;
 		}
-
 	}
 	
 	public void save(Student student) {
