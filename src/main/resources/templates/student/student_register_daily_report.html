@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,47 +21,36 @@
     <div class="row">
       <div class="col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
         <div class="well">
-          <form method="post" action="register_daily_report.html">
+          <form method="post" action="register_daily_report.html" th:action="@{/students/insert_daily_report}">
             <fieldset>
-              <legend>○月○日の日報を入力してください</legend>
+              <legend>日報を入力してください</legend>
               <div class="form-group">
                 <div class="row">
-                  <div class="col-sm-12">
-                    <label for="inputTodaysContent">本日学んだ内容:</label>
-                    <label class="control-label" style="color: red" for="inputTodaysContent">本日学んだ内容を入力してください</label>
-                    <textarea rows="10" cols="30" class="form-control" id="inputTodaysContent"></textarea>
+                  <div class="col-sm-12 mb-2">
+                    <label for="inputTodaysContent">日付:</label>
+                    <label class="control-label" style="color: red" for="inputTodaysContent">＊日付を変更する場合</label>
+                    <br />
+                    <input type="date" id="register-date-form" name="date" th:value="${dateNow}" class="form-control" style="margin-bottom: 20px;" />
                   </div>
                 </div>
               </div>
               <div class="form-group">
                 <div class="row">
                   <div class="col-sm-12">
-                    <label for="inputEmail">本日の理解度</label>
+                    <label for="inputTodaysContent">本日学んだ内容:</label>
+                    <label class="control-label" style="color: red" for="inputTodaysContent">本日学んだ内容を入力してください</label>
+                    <textarea rows="10" cols="30" class="form-control" id="inputTodaysContent" name="context"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label for="intelligibility">本日の理解度</label>
                     <label class="control-label" style="color: red" for="inputEmail">本日の理解度を選択してください</label>
-                    <div class="col-sm-12">
+                    <div class="col-sm-12" th:each="intelli:${intelligibilityForm}">
                       <label class="radio-inline">
-                        <input type="radio" name="inputTodaysIntelligibility" checked="checked">
-                        良く理解できた
-                      </label>
-                      <br />
-                      <label class="radio-inline">
-                        <input type="radio" name="inputTodaysIntelligibility">
-                        概ね理解できた
-                      </label>
-                      <br />
-                      <label class="radio-inline">
-                        <input type="radio" name="inputTodaysIntelligibility">
-                        普通
-                      </label>
-                      <br />
-                      <label class="radio-inline">
-                        <input type="radio" name="inputTodaysIntelligibility">
-                        少し難しかった
-                      </label>
-                      <br />
-                      <label class="radio-inline">
-                        <input type="radio" name="inputTodaysIntelligibility">
-                        とても難しかった
+                        <input type="radio" name="intelligibility" th:value="${intelli.key}" th:checked="${ intelli.key == 1 }" th:text="${intelli.value}">
                       </label>
                     </div>
                   </div>
@@ -71,7 +61,7 @@
                   <div class="col-sm-12">
                     <label for="inputTodaysIntelligibilityDetail">本日の理解度(詳細):</label>
                     <br /> ※上記で「少し難しかった」「とても難しかった」とお答えの方へ、具体的にどの内容が難しかったのかをご入力ください。また、復習が必要な箇所、苦手とする項目がありましたらご入力ください。
-                    <textarea rows="10" cols="30" class="form-control" id="inputTodaysIntelligibilityDetail"></textarea>
+                    <textarea rows="10" cols="30" class="form-control" id="inputTodaysIntelligibilityDetail" name="detailIntelligibillity"></textarea>
                   </div>
                 </div>
               </div>
@@ -79,31 +69,10 @@
                 <div class="row">
                   <div class="col-sm-12">
                     <label for="inputEmail">講師の対応の丁寧さ</label>
-                    <label class="control-label" style="color: red" for="inputEmail">講師の対応の丁寧さを選択してください</label>
-                    <div class="col-sm-12">
+                    <label class="control-label" style="color: red" for="aboutInstructor">講師の対応の丁寧さを選択してください</label>
+                    <div class="col-sm-12" th:each="about:${aboutInstructorForm}">
                       <label class="radio-inline">
-                        <input type="radio" name="civility" checked="checked">
-                        とても丁寧だった
-                      </label>
-                      <br />
-                      <label class="radio-inline">
-                        <input type="radio" name="civility">
-                        概ね丁寧だった
-                      </label>
-                      <br />
-                      <label class="radio-inline">
-                        <input type="radio" name="civility">
-                        どちらともいえない
-                      </label>
-                      <br />
-                      <label class="radio-inline">
-                        <input type="radio" name="civility">
-                        やや丁寧ではなかった
-                      </label>
-                      <br />
-                      <label class="radio-inline">
-                        <input type="radio" name="civility">
-                        全く丁寧ではなかった
+                        <input type="radio" name="aboutInstructor" th:value="${about.key}" th:checked="${ about.key == 1 }" th:text="${about.value}">
                       </label>
                     </div>
                   </div>
@@ -112,15 +81,16 @@
               <div class="form-group">
                 <div class="row">
                   <div class="col-sm-12">
-                    <label for="inputTodaysQuestion">本日の研修内容についてのご質問:</label>
+                    <label for="question">本日の研修内容についてのご質問:</label>
                     <br /> 研修時間内で質問できなかったことやご相談等がございましたらご入力ください。後日講師より解説致します。
-                    <textarea rows="10" cols="30" class="form-control" id="inputTodaysQuestion"></textarea>
+                    <textarea rows="10" cols="30" class="form-control" id="question" name="question"></textarea>
                   </div>
                 </div>
               </div>
               <div class="form-group">
                 <div class="row">
                   <div class="col-sm-12">
+                    <input type="hidden" name="trainingId" th:value="${trainingId}" />
                     <button type="submit" class="btn btn-primary">登録</button>
                   </div>
                 </div>

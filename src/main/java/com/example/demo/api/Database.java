@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.example.demo.domain.DailyReport;
 import com.example.demo.domain.Instructor;
 import com.example.demo.domain.StudentImpression;
 import com.example.demo.domain.Training;
@@ -100,6 +101,10 @@ public class Database {
 		studentImpressionList.add(new StudentImpression(3, 2, "鈴木貴大", "素晴らしい"));
 		studentImpressionList.add(new StudentImpression(4, 2, "鈴木奈央", "不良です。"));
 		return studentImpressionList;
+	}
+	
+	public DailyReport getDailyReport() {
+		return new DailyReport(1, LocalDate.now(), getTraining().getId(), 1, "こんにちは", 1, "test", 1, "", null, null);
 	}
 	
 	

@@ -3,6 +3,8 @@ package com.example.demo.form;
 import java.sql.Date;
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotBlank;
+
 public class DailyReportForm {
 
 	/** ID */
@@ -14,10 +16,13 @@ public class DailyReportForm {
 	/** 受講生ID */
 	private Integer studentId;
 	/** 内容 */
+	@NotBlank(message="内容を入力してください")
 	private String context;
 	/** 理解度 */
+	@NotBlank(message="理解度を入力してください")
 	private Integer intelligibility;
 	/** 理解度詳細 */
+	@NotBlank(message="理解度詳細を入力してください")
 	private String detailIntelligibillity;
 	/** 講師について */
 	private Integer aboutInstructor;

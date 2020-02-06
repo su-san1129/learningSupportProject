@@ -35,7 +35,7 @@
               <td><span th:text="${training.startDate}">2016/04/01</span> ～ <span th:text="${training.endDate}">2016/06/30</span></td>
               <td th:text="${training.name}">〇〇企業様向け Java新人研修</td>
               <td th:text="${training.instructor.name}">鈴木一郎</td>
-              <td><a th:href="@{/students/view_daily_report}"><button>日報(閲覧/登録)</button></a>
+              <td><a th:href="@{'/students/view_daily_report/'+ ${training.id}}"><button>日報(閲覧/登録)</button></a>
               </td>
             </tr>
           </tbody>
