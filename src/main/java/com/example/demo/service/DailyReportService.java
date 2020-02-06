@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.api.Database;
 import com.example.demo.domain.DailyReport;
 import com.example.demo.form.DailyReportForm;
 import com.example.demo.repository.DailyReportRepository;
+import com.example.demo.security.student.LoginStudent;
 
 @Service
 public class DailyReportService {
@@ -25,10 +27,13 @@ public class DailyReportService {
 		return dailyReportRepository.findAll();
 	}
 	
-	public void dailyReportSave(DailyReportForm form) {
+	public void dailyReportSave(DailyReportForm form, @AuthenticationPrincipal LoginStudent loginStudent) {
 		DailyReport report = new DailyReport();
 		BeanUtils.copyProperties(form, report);
+		// 日付をLocalDateに変更
 		report.setDate(form.toLocalDate());
+		// 受講生のIDを付与
+		report.setStudentId(loginStudent.getStudent().getId());
 		dailyReportRepository.save(report);
 	}
 	

@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class DailyReportForm {
 
@@ -16,14 +17,14 @@ public class DailyReportForm {
 	/** 受講生ID */
 	private Integer studentId;
 	/** 内容 */
-	@NotBlank(message="内容を入力してください")
-	private String context;
+	@NotBlank(message = "内容を入力してください")
+	private String content;
 	/** 理解度 */
-	@NotBlank(message="理解度を入力してください")
+	@NotNull(message = "理解度を入力してください")
 	private Integer intelligibility;
 	/** 理解度詳細 */
-	@NotBlank(message="理解度詳細を入力してください")
-	private String detailIntelligibillity;
+	@NotBlank(message = "理解度詳細を入力してください")
+	private String detailIntelligibility;
 	/** 講師について */
 	private Integer aboutInstructor;
 	/** 質問 */
@@ -33,16 +34,19 @@ public class DailyReportForm {
 		super();
 	}
 
-	public DailyReportForm(Integer id, Date date, Integer trainingId, Integer studentId, String context,
-			Integer intelligibility, String detailIntelligibillity, Integer aboutInstructor, String question) {
+	public DailyReportForm(Integer id, Date date, Integer trainingId, Integer studentId,
+			@NotBlank(message = "内容を入力してください") String content,
+			@NotNull(message = "理解度を入力してください") Integer intelligibility,
+			@NotBlank(message = "理解度詳細を入力してください") String detailIntelligibility, Integer aboutInstructor,
+			String question) {
 		super();
 		this.id = id;
 		this.date = date;
 		this.trainingId = trainingId;
 		this.studentId = studentId;
-		this.context = context;
+		this.content = content;
 		this.intelligibility = intelligibility;
-		this.detailIntelligibillity = detailIntelligibillity;
+		this.detailIntelligibility = detailIntelligibility;
 		this.aboutInstructor = aboutInstructor;
 		this.question = question;
 	}
@@ -50,6 +54,7 @@ public class DailyReportForm {
 	public LocalDate toLocalDate() {
 		return this.date.toLocalDate();
 	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -82,12 +87,12 @@ public class DailyReportForm {
 		this.studentId = studentId;
 	}
 
-	public String getContext() {
-		return context;
+	public String getContent() {
+		return content;
 	}
 
-	public void setContext(String context) {
-		this.context = context;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	public Integer getIntelligibility() {
@@ -98,12 +103,12 @@ public class DailyReportForm {
 		this.intelligibility = intelligibility;
 	}
 
-	public String getDetailIntelligibillity() {
-		return detailIntelligibillity;
+	public String getDetailIntelligibility() {
+		return detailIntelligibility;
 	}
 
-	public void setDetailIntelligibillity(String detailIntelligibillity) {
-		this.detailIntelligibillity = detailIntelligibillity;
+	public void setDetailIntelligibility(String detailIntelligibility) {
+		this.detailIntelligibility = detailIntelligibility;
 	}
 
 	public Integer getAboutInstructor() {
@@ -125,8 +130,8 @@ public class DailyReportForm {
 	@Override
 	public String toString() {
 		return "DailyReportForm [id=" + id + ", date=" + date + ", trainingId=" + trainingId + ", studentId="
-				+ studentId + ", context=" + context + ", intelligibility=" + intelligibility
-				+ ", detailIntelligibillity=" + detailIntelligibillity + ", aboutInstructor=" + aboutInstructor
+				+ studentId + ", content=" + content + ", intelligibility=" + intelligibility
+				+ ", detailIntelligibility=" + detailIntelligibility + ", aboutInstructor=" + aboutInstructor
 				+ ", question=" + question + "]";
 	}
 

@@ -13,11 +13,11 @@ public class DailyReport {
 	/** 受講生ID */
 	private Integer studentId;
 	/** 内容 */
-	private String context;
+	private String content;
 	/** 理解度 */
 	private Integer intelligibility;
 	/** 理解度詳細 */
-	private String detailIntelligibillity;
+	private String detailIntelligibility;
 	/** 講師について */
 	private Integer aboutInstructor;
 	/** 質問 */
@@ -31,17 +31,17 @@ public class DailyReport {
 		super();
 	}
 
-	public DailyReport(Integer id, LocalDate date, Integer trainingId, Integer studentId, String context,
-			Integer intelligibility, String detailIntelligibillity, Integer aboutInstructor, String question,
+	public DailyReport(Integer id, LocalDate date, Integer trainingId, Integer studentId, String content,
+			Integer intelligibility, String detailIntelligibility, Integer aboutInstructor, String question,
 			Training training, Student student) {
 		super();
 		this.id = id;
 		this.date = date;
 		this.trainingId = trainingId;
 		this.studentId = studentId;
-		this.context = context;
+		this.content = content;
 		this.intelligibility = intelligibility;
-		this.detailIntelligibillity = detailIntelligibillity;
+		this.detailIntelligibility = detailIntelligibility;
 		this.aboutInstructor = aboutInstructor;
 		this.question = question;
 		this.training = training;
@@ -80,12 +80,12 @@ public class DailyReport {
 		this.studentId = studentId;
 	}
 
-	public String getContext() {
-		return context;
+	public String getContent() {
+		return content;
 	}
 
-	public void setContext(String context) {
-		this.context = context;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	public Integer getIntelligibility() {
@@ -96,12 +96,12 @@ public class DailyReport {
 		this.intelligibility = intelligibility;
 	}
 
-	public String getDetailIntelligibillity() {
-		return detailIntelligibillity;
+	public String getDetailIntelligibility() {
+		return detailIntelligibility;
 	}
 
-	public void setDetailIntelligibillity(String detailIntelligibillity) {
-		this.detailIntelligibillity = detailIntelligibillity;
+	public void setDetailIntelligibility(String detailIntelligibility) {
+		this.detailIntelligibility = detailIntelligibility;
 	}
 
 	public Integer getAboutInstructor() {
@@ -139,8 +139,8 @@ public class DailyReport {
 	@Override
 	public String toString() {
 		return "DailyReport [id=" + id + ", date=" + date + ", trainingId=" + trainingId + ", studentId=" + studentId
-				+ ", context=" + context + ", intelligibility=" + intelligibility + ", detailIntelligibillity="
-				+ detailIntelligibillity + ", aboutInstructor=" + aboutInstructor + ", question=" + question
+				+ ", content=" + content + ", intelligibility=" + intelligibility + ", detailIntelligibility="
+				+ detailIntelligibility + ", aboutInstructor=" + aboutInstructor + ", question=" + question
 				+ ", training=" + training + ", student=" + student + "]";
 	}
 

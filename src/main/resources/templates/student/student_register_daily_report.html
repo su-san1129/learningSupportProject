@@ -21,7 +21,7 @@
     <div class="row">
       <div class="col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
         <div class="well">
-          <form method="post" action="register_daily_report.html" th:action="@{/students/insert_daily_report}">
+          <form method="post" action="register_daily_report.html" th:action="@{/students/insert_daily_report}" th:object="${dailyReportForm}">
             <fieldset>
               <legend>日報を入力してください</legend>
               <div class="form-group">
@@ -30,6 +30,7 @@
                     <label for="inputTodaysContent">日付:</label>
                     <label class="control-label" style="color: red" for="inputTodaysContent">＊日付を変更する場合</label>
                     <br />
+                    <div th:errors="*{date}" style="color:red;"></div>
                     <input type="date" id="register-date-form" name="date" th:value="${dateNow}" class="form-control" style="margin-bottom: 20px;" />
                   </div>
                 </div>
@@ -38,8 +39,9 @@
                 <div class="row">
                   <div class="col-sm-12">
                     <label for="inputTodaysContent">本日学んだ内容:</label>
+                    <div th:errors="*{content}" style="color:red;"></div>
                     <label class="control-label" style="color: red" for="inputTodaysContent">本日学んだ内容を入力してください</label>
-                    <textarea rows="10" cols="30" class="form-control" id="inputTodaysContent" name="context"></textarea>
+                    <textarea rows="10" cols="30" class="form-control" id="inputTodaysContent" name="content" th:field="*{content}"></textarea>
                   </div>
                 </div>
               </div>
@@ -47,6 +49,7 @@
                 <div class="row">
                   <div class="col-sm-12">
                     <label for="intelligibility">本日の理解度</label>
+                    <div th:errors="*{intelligibility}" style="color:red;"></div>
                     <label class="control-label" style="color: red" for="inputEmail">本日の理解度を選択してください</label>
                     <div class="col-sm-12" th:each="intelli:${intelligibilityForm}">
                       <label class="radio-inline">
@@ -60,8 +63,9 @@
                 <div class="row">
                   <div class="col-sm-12">
                     <label for="inputTodaysIntelligibilityDetail">本日の理解度(詳細):</label>
+                    <div th:errors="*{detailIntelligibility}" style="color:red;"></div>
                     <br /> ※上記で「少し難しかった」「とても難しかった」とお答えの方へ、具体的にどの内容が難しかったのかをご入力ください。また、復習が必要な箇所、苦手とする項目がありましたらご入力ください。
-                    <textarea rows="10" cols="30" class="form-control" id="inputTodaysIntelligibilityDetail" name="detailIntelligibillity"></textarea>
+                    <textarea rows="10" cols="30" class="form-control" id="inputTodaysIntelligibilityDetail" name="detailIntelligibility" th:field="*{detailIntelligibility}"></textarea>
                   </div>
                 </div>
               </div>
@@ -69,6 +73,7 @@
                 <div class="row">
                   <div class="col-sm-12">
                     <label for="inputEmail">講師の対応の丁寧さ</label>
+                    <div th:errors="*{aboutInstructor}" style="color:red;"></div>
                     <label class="control-label" style="color: red" for="aboutInstructor">講師の対応の丁寧さを選択してください</label>
                     <div class="col-sm-12" th:each="about:${aboutInstructorForm}">
                       <label class="radio-inline">
@@ -82,8 +87,9 @@
                 <div class="row">
                   <div class="col-sm-12">
                     <label for="question">本日の研修内容についてのご質問:</label>
+                    <div th:errors="*{question}" style="color:red;"></div>
                     <br /> 研修時間内で質問できなかったことやご相談等がございましたらご入力ください。後日講師より解説致します。
-                    <textarea rows="10" cols="30" class="form-control" id="question" name="question"></textarea>
+                    <textarea rows="10" cols="30" class="form-control" id="question" name="question" th:field="*{question}"></textarea>
                   </div>
                 </div>
               </div>

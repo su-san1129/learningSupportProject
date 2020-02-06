@@ -1,4 +1,4 @@
-package com.example.demo.security;
+package com.example.demo.security.Company;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -23,10 +23,5 @@ public class CompanySecurityConfig extends WebSecurityConfigurerAdapter {
 		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout**")).logoutSuccessUrl("/")
 				.deleteCookies("JSESSIONID").invalidateHttpSession(true);
 	}
-
-//	@Override
-//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
-//	}
 
 }

@@ -17,7 +17,7 @@ public class LoginStudent extends User {
 		this.student = student;
 	}
 
-	public Student getAdmin() {
+	public Student getStudent() {
 		return student;
 	}
 

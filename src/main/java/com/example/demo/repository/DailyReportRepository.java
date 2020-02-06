@@ -21,20 +21,19 @@ public class DailyReportRepository {
 	private NamedParameterJdbcTemplate template;
 
 	// ロギング処理
-	private static final Logger LOGGER = LoggerFactory.getLogger(AdminRepository.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DailyReportRepository.class);
 
 	private final RowMapper<DailyReport> DAILY_REPORT_ROWMAPPER = (rs, i) -> {
-
 		Integer id = rs.getInt("id");
 		LocalDate date = rs.getDate("date").toLocalDate();
 		Integer trainingId = rs.getInt("training_id");
 		Integer studentId = rs.getInt("student_id");
-		String context = rs.getString("context");
+		String content = rs.getString("content");
 		Integer intelligibility = rs.getInt("intelligibility");
-		String detailIntelligibillity = rs.getString("detail_intelligibillity");
+		String detailIntelligibility = rs.getString("detail_intelligibility");
 		Integer aboutInstructor = rs.getInt("about_instructor");
 		String question = rs.getString("question");
-		return new DailyReport(id, date, trainingId, studentId, context, intelligibility, detailIntelligibillity,
+		return new DailyReport(id, date, trainingId, studentId, content, intelligibility, detailIntelligibility,
 				aboutInstructor, question, null, null);
 	};
 	
@@ -47,22 +46,24 @@ public class DailyReportRepository {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(report);
 		StringBuilder sql = new StringBuilder();
 		if (report.getId() == null) {
-			sql.append("INSERT INTO daily_reports (date, training_id, student_id, context, ");
-			sql.append("intelligibility, detail_intelligibillity, about_instructor, question) ");
-			sql.append("VALUES (:date, :trainingId, :studentId, :context, ");
-			sql.append(":intelligibility, :detailIntelligibillity, :aboutInstructor, :question);");
+			sql.append("INSERT INTO daily_reports (date, training_id, student_id, content, ");
+			sql.append("intelligibility, detail_intelligibility, about_instructor, question) ");
+			sql.append("VALUES (:date, :trainingId, :studentId, :content, ");
+			sql.append(":intelligibility, :detailIntelligibility, :aboutInstructor, :question);");
+			LOGGER.info("日報の新規登録を行いました。");
 		} else {
 			sql.append("UPDATE students SET ");
 			sql.append("id = :id, ");
 			sql.append("date = :date, ");
 			sql.append("training_id = :trainingId, ");
 			sql.append("student_id = :studentId, ");
-			sql.append("context = :context, ");
+			sql.append("content = :content, ");
 			sql.append("intelligibility = :intelligibility ");
-			sql.append("detail_intelligibillity = :detailIntelligibillity");
+			sql.append("detail_intelligibility = :detailIntelligibility");
 			sql.append("about_instructor = :aboutInstructor");
 			sql.append("question = :question");
 			sql.append("WHERE id = :id");
+			LOGGER.info("日報の更新を行いました。ID:" + report.getId());
 		}
 		template.update(sql.toString(), param);
 	}

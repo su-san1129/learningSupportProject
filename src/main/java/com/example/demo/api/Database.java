@@ -38,7 +38,7 @@ public class Database {
 	public Training getTraining2() {
 		LocalDate startDate = LocalDate.of(2020, 4, 1);
 		LocalDate endDate = LocalDate.of(2020, 6, 30);
-		return new Training(1
+		return new Training(2
 				, startDate
 				, endDate
 				, "Java研修"

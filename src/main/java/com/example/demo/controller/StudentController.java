@@ -8,11 +8,13 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +24,14 @@ import com.example.demo.api.Database;
 import com.example.demo.domain.Training;
 import com.example.demo.form.DailyReportForm;
 import com.example.demo.form.StudentRegisterForm;
+import com.example.demo.security.student.LoginStudent;
 import com.example.demo.service.DailyReportService;
 import com.example.demo.service.StudentService;
 
 @Controller
 @RequestMapping("/students")
 public class StudentController {
+	
 
 	@Autowired
 	private StudentService studentService;
@@ -40,6 +44,11 @@ public class StudentController {
 
 	@Autowired
 	private Database database;
+	
+	@ModelAttribute
+	public DailyReportForm setUpDailyReportForm() {
+		return new DailyReportForm();
+	}
 
 	@GetMapping("/login")
 	public String login(Model model, @RequestParam(required = false) String error) {
@@ -111,14 +120,21 @@ public class StudentController {
 		model.addAttribute("intelligibilityForm", intelligibilityForm());
 		// 講師評価に表示するデータ
 		model.addAttribute("aboutInstructorForm", aboutInstructorForm());
+		// 研修ID
 		model.addAttribute("trainingId", trainingId);
 		return "student/student_register_daily_report";
 	}
 
 	@PostMapping("/insert_daily_report")
-	public String insertDailyReport(DailyReportForm form) {
-		System.out.println(form);
-
+	public String insertDailyReport(
+			  @Validated DailyReportForm form
+			, BindingResult result
+			, Model model
+			, @AuthenticationPrincipal LoginStudent loginStudent) {
+		if(result.hasErrors()) {
+			return registerDailyReport(form.getTrainingId(), model);
+		}
+		dailyReportService.dailyReportSave(form, loginStudent);
 		return "redirect:/students/training_list";
 	}
 
