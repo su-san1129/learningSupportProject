@@ -4,18 +4,23 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.domain.Admin;
+import com.example.demo.domain.Company;
 import com.example.demo.form.AdminRegisterForm;
+import com.example.demo.form.CompanyForm;
 import com.example.demo.service.AdminService;
+import com.example.demo.service.CompanyService;
 
 @Controller
 @RequestMapping("/admin")
@@ -23,6 +28,9 @@ public class AdminController {
 
 	@Autowired
 	private AdminService adminService;
+
+	@Autowired
+	private CompanyService companyService;
 
 	@Autowired
 	private HttpSession session;
@@ -63,7 +71,7 @@ public class AdminController {
 		if (result.hasErrors()) {
 			return toRegisterAdmin(form, model);
 		}
-		if(!form.getPassword().equals(form.getPasswordConfirm())) {
+		if (!form.getPassword().equals(form.getPasswordConfirm())) {
 			result.rejectValue("password", "", "パスワードが一致しませんでした。");
 			return toRegisterAdmin(form, model);
 		}
@@ -82,7 +90,7 @@ public class AdminController {
 		form.setPassword(password);
 		session.removeAttribute("password");
 		adminService.adminSave(form);
-		return "redirect:admin/admin_register_finish";
+		return "redirect:/admin/register_finish";
 	}
 
 	@RequestMapping("/print_detail")
@@ -116,17 +124,29 @@ public class AdminController {
 	}
 
 	@RequestMapping("/company_list")
-	public String companyList() {
+	public String companyList(Model model) {
+		model.addAttribute("companies", companyService.showAllCompany());
 		return "admin/company_list";
 	}
 
-	@RequestMapping("/company_detail")
-	public String companyDetail() {
+	@RequestMapping("/company_detail/{companyId}")
+	public String companyDetail(@PathVariable Integer companyId, Model model) {
+		Company company = companyService.showCompany(companyId);
+		CompanyForm form = new CompanyForm();
+		BeanUtils.copyProperties(company, form);
+		model.addAttribute("companyForm", form);
 		return "admin/company_detail";
 	}
 
-	@RequestMapping("/company_register_charge")
-	public String companyRegisterCharge() {
+	@RequestMapping("/insertCompany")
+	public String insertCompany(CompanyForm form) {
+		companyService.companySave(form);
+		return "redirect:/admin/company_list";
+	}
+
+	@RequestMapping("/company_register_charge/{companyId}")
+	public String companyRegisterCharge(@PathVariable Integer companyId, Model model) {
+		model.addAttribute("company", companyService.showCompany(companyId));
 		return "admin/company_register_charge";
 	}
 
@@ -150,6 +170,11 @@ public class AdminController {
 	@RequestMapping("/instructor_list")
 	public String instructorList() {
 		return "admin/instructor_list";
+	}
+
+	@RequestMapping("/register_company")
+	public String registerCompany() {
+		return "admin/register_company";
 	}
 
 }

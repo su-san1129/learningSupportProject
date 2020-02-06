@@ -19,7 +19,7 @@
       <div class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
         <!-- 背景をグレーに、埋め込んだようなコンポーネント -->
         <div class="well">
-          <form method="post" action="company_list.html" th:action="@{/admin/insertCompany}" th:object="${companyForm}">
+          <form method="post" action="company_list.html" th:action="@{/admin/insertCompany}">
             <fieldset>
               <legend>企業(企業担当者)</legend>
               <div class="form-group">
@@ -27,7 +27,7 @@
                   <div class="col-sm-12">
                     <label for="inputCompanyName">企業名:</label>
                     <label class="control-label" style="color: red" for="inputCompanyName">企業名を入力してください</label>
-                    <input type="text" id="inputCompanyName" class="form-control" name="name" th:field="*{name}">
+                    <input type="text" id="inputCompanyName" class="form-control" name="name">
                   </div>
                 </div>
               </div>
@@ -36,7 +36,7 @@
                   <div class="col-sm-12">
                     <label for="inputCompanyName">企業名(フリガナ):</label>
                     <label class="control-label" style="color: red" for="inputCompanyKana">フリガナを入力してください</label>
-                    <input type="text" id="inputCompanyKana" class="form-control" name="kana" th:field="*{kana}">
+                    <input type="text" id="inputCompanyKana" class="form-control" name="kana">
                   </div>
                 </div>
               </div>
@@ -44,14 +44,13 @@
                 <div class="row">
                   <div class="col-sm-12">
                     <label for="inputRemarks">備考</label>
-                    <textarea rows="10" cols="30" class="form-control" id="inputRemarks" name="remarks" th:field="*{remarks}"></textarea>
+                    <textarea rows="10" cols="30" class="form-control" id="inputRemarks" name="remarks"></textarea>
                   </div>
                 </div>
               </div>
               <div class="form-group">
                 <div class="row">
                   <div class="col-sm-12">
-                    <input type="hidden" name="id" th:value="*{id}"/>
                     <button type="submit" class="btn btn-primary">登録</button>
                   </div>
                 </div>
