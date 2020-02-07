@@ -41,11 +41,8 @@
               <td th:text="${admin.email}">ichiro@gmail.com</td>
               <td th:if="${!admin.canShowAllCompany && admin.companyList.size() == 0}">なし</td>
               <td th:if="${admin.canShowAllCompany}">すべて</td>
-              <td th:if="!admin.canShowAllCompany && 0 < admin.companyList.size() "
-                  th:each="company:${admin.companyList}" 
-                  th:text="${company.name}">
-              </td>
-              <td><form action="facility_manager_detail.html" th:action="@{/admin/facility_manager_detail}" method="post">
+              <td th:if="!admin.canShowAllCompany && 0 < admin.companyList.size() " th:each="company:${admin.companyList}" th:text="${company.name}"></td>
+              <td><form action="facility_manager_detail.html" th:action="@{'/admin/facility_manager_detail/'+${admin.id}}" method="post">
                   <button type="submit">編集</button>
                 </form></td>
             </tr>

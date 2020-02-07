@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -25,25 +26,26 @@ public class CompanyRepository {
 	// ロギング処理
 	private static final Logger LOGGER = LoggerFactory.getLogger(CompanyRepository.class);
 
-//	private final RowMapper<Company> COMPANY_ROWMAPPER = (rs, i) -> {
-//		Integer id = rs.getInt("id");
-//		String name = rs.getString("name");
-//		String kana = rs.getString("kana");
-//		String remarks = rs.getString("remarks");
-//		List<CompanyMember> companyMemberList = new ArrayList<>();
-//		return new Company(id, name, kana, remarks, companyMemberList);
-//	};
+	private final RowMapper<Company> COMPANY_ROWMAPPER = (rs, i) -> {
+		Integer id = rs.getInt("id");
+		String name = rs.getString("name");
+		String kana = rs.getString("kana");
+		String remarks = rs.getString("remarks");
+		List<CompanyMember> companyMemberList = new ArrayList<>();
+		return new Company(id, name, kana, remarks, companyMemberList);
+	};
 
 	private final ResultSetExtractor<List<Company>> COMPANY_RSE = (rs) -> {
 		int preId = 0;
 		List<Company> companyList = new ArrayList<>();
-		List<CompanyMember> companyMemberList = new ArrayList<>();
+		List<CompanyMember> companyMemberList = null;
 		while (rs.next()) {
 			if (preId != rs.getInt("id")) {
 				Integer id = rs.getInt("id");
 				String name = rs.getString("name");
 				String kana = rs.getString("kana");
 				String remarks = rs.getString("remarks");
+				companyMemberList = new ArrayList<>();
 				Company company = new Company(id, name, kana, remarks, companyMemberList);
 				preId = id;
 				companyList.add(company);
@@ -51,7 +53,7 @@ public class CompanyRepository {
 			if (rs.getInt("member_id") != 0) {
 				Integer comId = rs.getInt("member_id");
 				String memberName = rs.getString("member_name");
-				String memberKana = rs.getString("member_kame");
+				String memberKana = rs.getString("member_kana");
 				String email = rs.getString("email");
 				String password = rs.getString("password");
 				CompanyMember comMember = new CompanyMember(comId, memberName, memberKana, email, password, rs.getInt("id"));
@@ -60,6 +62,12 @@ public class CompanyRepository {
 		}
 		return companyList;
 	};
+	
+	public List<Company> findAllNonCompanyMember(){
+		String sql = "SELECT * FROM companies ORDER BY id";
+		LOGGER.info("企業の全件取得を行いました（企業担当者は含みません。）");
+		return template.query(sql, COMPANY_ROWMAPPER);
+	}
 	
 	public List<Company> findAll(){
 		StringBuilder sql = new StringBuilder();

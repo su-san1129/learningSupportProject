@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.controller.admin;
 
 import java.util.List;
 
@@ -16,11 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.domain.Admin;
-import com.example.demo.domain.Company;
 import com.example.demo.form.AdminRegisterForm;
-import com.example.demo.form.CompanyForm;
 import com.example.demo.service.AdminService;
-import com.example.demo.service.CompanyService;
 
 @Controller
 @RequestMapping("/admin")
@@ -28,9 +25,6 @@ public class AdminController {
 
 	@Autowired
 	private AdminService adminService;
-
-	@Autowired
-	private CompanyService companyService;
 
 	@Autowired
 	private HttpSession session;
@@ -123,35 +117,12 @@ public class AdminController {
 		return "admin/admin_training_detail";
 	}
 
-	@RequestMapping("/company_list")
-	public String companyList(Model model) {
-		model.addAttribute("companies", companyService.showAllCompany());
-		return "admin/company_list";
-	}
-
-	@RequestMapping("/company_detail/{companyId}")
-	public String companyDetail(@PathVariable Integer companyId, Model model) {
-		Company company = companyService.showCompany(companyId);
-		CompanyForm form = new CompanyForm();
-		BeanUtils.copyProperties(company, form);
-		model.addAttribute("companyForm", form);
-		return "admin/company_detail";
-	}
-
-	@RequestMapping("/insertCompany")
-	public String insertCompany(CompanyForm form) {
-		companyService.companySave(form);
-		return "redirect:/admin/company_list";
-	}
-
-	@RequestMapping("/company_register_charge/{companyId}")
-	public String companyRegisterCharge(@PathVariable Integer companyId, Model model) {
-		model.addAttribute("company", companyService.showCompany(companyId));
-		return "admin/company_register_charge";
-	}
-
-	@RequestMapping("/facility_manager_detail")
-	public String facilityManagerDetail() {
+	@RequestMapping("/facility_manager_detail/{id}")
+	public String facilityManagerDetail(@PathVariable Integer id,Model model) {
+		AdminRegisterForm form = new AdminRegisterForm();
+		BeanUtils.copyProperties( adminService.showAdmin(id), form);
+		model.addAttribute("adminRegisterForm", form);
+		model.addAttribute("companies", adminService.showCompanies());
 		return "admin/facility_manager_detail";
 	}
 
@@ -170,11 +141,6 @@ public class AdminController {
 	@RequestMapping("/instructor_list")
 	public String instructorList() {
 		return "admin/instructor_list";
-	}
-
-	@RequestMapping("/register_company")
-	public String registerCompany() {
-		return "admin/register_company";
 	}
 
 }

@@ -81,6 +81,18 @@ public class AdminRepository {
 
 	}
 	
+	public Admin load(Integer id) {
+		try {
+			String sql = "SELECT id, name, kana, email, password, can_show_all_company FROM admins WHERE id = :id";
+			SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
+			return template.queryForObject(sql, param, ADMIN_ROWMAPPER);
+		} catch (DataAccessException e) {
+			LOGGER.warn("検索された管理者は存在しません。");
+			return null;
+		}
+		
+	}
+	
 	/**
 	 * 管理者の全件検索.
 	 * @return 管理者

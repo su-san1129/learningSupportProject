@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -16,7 +17,7 @@ import com.example.demo.domain.CompanyMember;
 
 @Repository
 public class CompanyMemberRepository {
-	
+
 	@Autowired
 	private NamedParameterJdbcTemplate template;
 
@@ -33,23 +34,52 @@ public class CompanyMemberRepository {
 		Integer companyId = rs.getInt("company_id");
 		return new CompanyMember(id, name, kana, email, password, companyId);
 	};
-	
+
 	public CompanyMember findByEmail(String email) {
 		try {
 			String sql = "SELECT * FROM company_members WHERE email = :email";
 			SqlParameterSource param = new MapSqlParameterSource().addValue("email", email);
 			return template.queryForObject(sql, param, COMPANY_MEMBER_ROWMAPPER);
 		} catch (DataAccessException e) {
-			LOGGER.warn("検索された管理者は存在しません。");
+			LOGGER.info("検索された管理者は存在しません。");
 			return null;
 		}
 
 	}
-	
-	public List<CompanyMember> findAll(){
+
+	public List<CompanyMember> findAll() {
 		String sql = "SELECT * FROM company_members ORDER BY id";
 		return template.query(sql, COMPANY_MEMBER_ROWMAPPER);
 	}
+
+	public void save(CompanyMember member) {
+
+		SqlParameterSource param = new BeanPropertySqlParameterSource(member);
+		StringBuilder sql = new StringBuilder();
+		if (member.getId() == null) {
+			sql.append("INSERT INTO company_members (name, kana, email, password, company_id) ");
+			sql.append("VALUES (:name, :kana, :email, :password, :companyId);");
+			LOGGER.info("企業担当者の新規登録を行いました。");
+		} else {
+			sql.append("UPDATE company_members SET ");
+			sql.append("id = :id, ");
+			sql.append("name = :name, ");
+			sql.append("kana = :kana, ");
+			sql.append("email = :email, ");
+			sql.append("password = :password, ");
+			sql.append("company_id = :companyId ");
+			sql.append("WHERE id = :id");
+			LOGGER.info("企業担当者の更新を行いました。ID:"+member.getId());
+		}
+		template.update(sql.toString(), param);
+
+	}
 	
+	public void deleteById(Integer id) {
+		String sql = "DELETE FROM company_members WHERE id = :id";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
+		template.update(sql, param);
+		LOGGER.info("ID:"+ id + "の企業担当者の削除を行いました。");
+	}
 
 }

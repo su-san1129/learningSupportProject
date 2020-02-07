@@ -35,6 +35,7 @@ public class Database {
 				, getWeeklyReport()
 				);
 	}
+	
 	public Training getTraining2() {
 		LocalDate startDate = LocalDate.of(2020, 4, 1);
 		LocalDate endDate = LocalDate.of(2020, 6, 30);
@@ -96,6 +97,7 @@ public class Database {
 		studentImpressionList.add(new StudentImpression(2, 1, "鈴木奈央", "不良です。"));
 		return studentImpressionList;
 	}
+	
 	public List<StudentImpression> getStudentImpressionList2(){
 		List<StudentImpression> studentImpressionList = new ArrayList<>();
 		studentImpressionList.add(new StudentImpression(3, 2, "鈴木貴大", "素晴らしい"));
