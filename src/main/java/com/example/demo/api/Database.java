@@ -1,5 +1,6 @@
 package com.example.demo.api;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import com.example.demo.domain.StudentImpression;
 import com.example.demo.domain.Training;
 import com.example.demo.domain.TrainingStudent;
 import com.example.demo.domain.WeeklyReport;
+import com.example.demo.form.DailyReportForm;
 
 @Component
 public class Database {
@@ -108,6 +110,13 @@ public class Database {
 	public DailyReport getDailyReport() {
 		return new DailyReport(1, LocalDate.now(), getTraining().getId(), 1, "こんにちは", 1, "test", 1, "", null, null);
 	}
+	
+	@SuppressWarnings("deprecation")
+	public DailyReportForm getDailyReportForm() {
+		return new DailyReportForm(1, new Date(2020, 1, 1), getTraining().getId(), 1, "こんにちは", 1, "test", 1, "");
+	}
+	
+	
 	
 	
 	

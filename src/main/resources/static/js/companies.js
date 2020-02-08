@@ -13,7 +13,6 @@ function addCompany() {
   var selectIndex = document.adminEditForm.companySelect.selectedIndex;
   var companyName = document.adminEditForm.companySelect.options[selectIndex].text;
   var companyId = document.adminEditForm.companySelect.value;
-  //alert("companyName:" + companyName + "/companyId:" + companyId);
   
   var div_element = document.createElement("div");
     div_element.innerHTML = '<span><button type="button" onclick="deleteCompany(this);">削除</button>&nbsp;' + companyName + '<input type="hidden" name="companyIdList" value="' + companyId + '" /></span>' ;
@@ -23,6 +22,7 @@ function addCompany() {
 
 function deleteCompany(deleteButton) {
   var parent_object = deleteButton.parentNode;
-  alert(parent_object);
+  alert('選択された企業を削除しますか？')
+
   deleteButton.parentNode.parentNode.removeChild(deleteButton.parentNode);
 }

@@ -1,6 +1,7 @@
 package com.example.demo.controller.admin;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
@@ -12,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -42,8 +44,8 @@ public class AdminController {
 	 * @return ログインページ
 	 */
 	@RequestMapping("/login")
-	public String login(Model model, @RequestParam(required = false) String error) {
-		if (error != null) {
+	public String login(Model model, @RequestParam(required = false) Optional<String> error) {
+		if (error.isPresent()) {
 			model.addAttribute("loginError", "メールアドレスまたはパスワードが違います。");
 		}
 		return "admin/admin_login";
@@ -131,6 +133,19 @@ public class AdminController {
 		List<Admin> adminList = adminService.showAllAdmins();
 		model.addAttribute("admins", adminList);
 		return "admin/facility_manager_list";
+	}
+	
+	@PostMapping("/facility_manager_edit")
+	public String facilityManagerEdit(@Validated AdminRegisterForm form, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+			return facilityManagerDetail(form.getId(), model);
+		}
+		if (!form.getPassword().equals(form.getPasswordConfirm())) {
+			result.rejectValue("password", "", "パスワードが一致しませんでした。");
+			return facilityManagerDetail(form.getId(), model);
+		}
+		return "redirect:/admin/facility_manager_list";
+		
 	}
 
 	@RequestMapping("/instructor_detail")

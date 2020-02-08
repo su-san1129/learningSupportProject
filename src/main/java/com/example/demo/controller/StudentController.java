@@ -50,6 +50,13 @@ public class StudentController {
 		return new DailyReportForm();
 	}
 
+	/**
+	 * ログイン画面.
+	 * 
+	 * @param model モデル
+	 * @param error エラー
+	 * @return ログイン画面
+	 */
 	@GetMapping("/login")
 	public String login(Model model, @RequestParam(required = false) String error) {
 		if (error != null) {
@@ -58,6 +65,13 @@ public class StudentController {
 		return "student/student_login";
 	}
 
+	/**
+	 * 受講者の登録ページ.
+	 * 
+	 * @param form フォーム
+	 * @param model モデル
+	 * @return 受講者の登録ページ
+	 */
 	@RequestMapping("/register")
 	public String toRegisterStudent(StudentRegisterForm form, Model model) {
 		if (form != null) {
@@ -69,7 +83,7 @@ public class StudentController {
 		return "student/student_register";
 	}
 
-	@RequestMapping("/register/student")
+	@PostMapping("/register/student")
 	public String registerStudent(@Validated StudentRegisterForm form, BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			return toRegisterStudent(form, model);
@@ -82,12 +96,12 @@ public class StudentController {
 		return "student/student_register_confirm";
 	}
 
-	@RequestMapping("/register/confirm")
+	@PostMapping("/register/confirm")
 	public String toRegisterStudentConfirm() {
 		return "student/student_register_confirm";
 	}
 
-	@RequestMapping("/register/finish")
+	@PostMapping("/register/finish")
 	public String registerFinish(StudentRegisterForm form) {
 		String password = (String) session.getAttribute("password");
 		form.setPassword(password);
@@ -106,12 +120,14 @@ public class StudentController {
 
 	@GetMapping("/view_daily_report/{trainingId}")
 	public String index(@PathVariable Integer trainingId, Model model) {
+		// 研修ID
 		model.addAttribute("trainingId", trainingId);
+		// 日報リスト
 		model.addAttribute("dailyReportList", dailyReportService.showDailyReportByTrainingId(trainingId));
 		return "student/student_view_daily_report";
 	}
 
-	@RequestMapping("/register_daily_report/{trainingId}")
+	@GetMapping("/register_daily_report/{trainingId}")
 	public String registerDailyReport(@PathVariable Integer trainingId, Model model) {
 		LocalDate dateNow = LocalDate.now();
 		// フォームに表示する時刻
@@ -125,6 +141,15 @@ public class StudentController {
 		return "student/student_register_daily_report";
 	}
 
+	/**
+	 * 日報の登録処理.
+	 * 
+	 * @param form フォーム
+	 * @param result バリデーションチェック
+	 * @param model モデル
+	 * @param loginStudent ログイン中の受講者情報
+	 * @return 研修リストページ
+	 */
 	@PostMapping("/insert_daily_report")
 	public String insertDailyReport(
 			  @Validated DailyReportForm form

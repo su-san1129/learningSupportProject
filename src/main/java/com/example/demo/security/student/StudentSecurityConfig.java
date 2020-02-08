@@ -28,10 +28,7 @@ public class StudentSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.antMatcher("/**")
 				.authorizeRequests()
-				.antMatchers(
-						     "/students/login"
-						   , "/students/register/**"
-						   )
+				.antMatchers( "/students/login", "/students/register/**" )
 				.permitAll()
 				.anyRequest()
 				.authenticated();

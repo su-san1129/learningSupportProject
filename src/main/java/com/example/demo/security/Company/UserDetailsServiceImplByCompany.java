@@ -28,7 +28,7 @@ public class UserDetailsServiceImplByCompany implements UserDetailsService{
 		}
 
 		Collection<GrantedAuthority> authorityList = new ArrayList<>();
-		authorityList.add(new SimpleGrantedAuthority("ROLE_STUDENT"));
+		authorityList.add(new SimpleGrantedAuthority("ROLE_COMPANY"));
 		return new LoginComMember(comMember, authorityList);
 	}
 

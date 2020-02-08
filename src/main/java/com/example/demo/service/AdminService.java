@@ -8,9 +8,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.domain.Admin;
+import com.example.demo.domain.AdminResponsibleCompany;
 import com.example.demo.domain.Company;
 import com.example.demo.form.AdminRegisterForm;
 import com.example.demo.repository.AdminRepository;
+import com.example.demo.repository.AdminResponsibleCompanyRepository;
 import com.example.demo.repository.CompanyRepository;
 
 /**
@@ -27,6 +29,9 @@ public class AdminService {
 	
 	@Autowired
 	private CompanyRepository companyRepository;
+	
+	@Autowired
+	private AdminResponsibleCompanyRepository adminResponsibleCompany;
 
 	@Autowired
 	private PasswordEncoder encoder;
@@ -72,8 +77,30 @@ public class AdminService {
 		return adminReposiory.load(id);
 	}
 	
+	/**
+	 * 企業担当者を含まない会社リスト.
+	 * 
+	 * @return 企業すべて
+	 */
 	public List<Company> showCompanies() {
 		return companyRepository.findAllNonCompanyMember();
+	}
+	
+	/**
+	 * 運営者の担当企業の追加.
+	 * 
+	 * @param arc 運営者の担当企業
+	 */
+	public void arcSave(AdminResponsibleCompany arc) {
+		adminResponsibleCompany.save(arc);
+	}
+	
+	/**
+	 * 運営者の担当企業を削除.
+	 * @param arcId 運営者の担当企業Id
+	 */
+	public void arcDelete(Integer arcId) {
+		adminResponsibleCompany.deleteById(arcId);
 	}
 
 }

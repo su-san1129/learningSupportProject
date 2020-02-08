@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 
-import com.example.demo.domain.Company;
 
 /**
  * 管理者の登録を行うフォーム.
@@ -13,37 +12,34 @@ import com.example.demo.domain.Company;
  *
  */
 public class AdminRegisterForm {
-	
+
 	/** 管理者ID */
 	private Integer id;
 	/** 管理者名 */
-	@NotBlank(message="名前を入力してください。")
+	@NotBlank(message = "名前を入力してください。")
 	private String name;
 	/** フリガナ */
-	@NotBlank(message="フリガナを入力してください。")
+	@NotBlank(message = "フリガナを入力してください。")
 	private String kana;
 	/** メールアドレス */
-	@NotBlank(message="メールアドレスを入力してください。")
+	@NotBlank(message = "メールアドレスを入力してください。")
 	private String email;
 	/** パスワード */
-	@NotBlank(message="パスワードを入力してください。")
+	@NotBlank(message = "パスワードを入力してください。")
 	private String password;
-	@NotBlank(message="確認用パスワードを入力してください。")
+	@NotBlank(message = "確認用パスワードを入力してください。")
 	private String passwordConfirm;
 	/** すべての企業情報を見る権限 */
 	private boolean canShowAllCompany;
 	/** 企業情報 */
-	private List<Company> companyList;
+	private List<Integer> companyIdList;
 
 	public AdminRegisterForm() {
 		super();
 	}
 
-	public AdminRegisterForm(Integer id, @NotBlank(message = "名前を入力してください。") String name,
-			@NotBlank(message = "フリガナを入力してください。") String kana, @NotBlank(message = "メールアドレスを入力してください。") String email,
-			@NotBlank(message = "パスワードを入力してください。") String password,
-			@NotBlank(message = "確認用パスワードを入力してください。") String passwordConfirm, boolean canShowAllCompany,
-			List<Company> companyList) {
+	public AdminRegisterForm(Integer id, String name, String kana, String email, String password,
+			String passwordConfirm, boolean canShowAllCompany, List<Integer> companyIdList) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -52,7 +48,7 @@ public class AdminRegisterForm {
 		this.password = password;
 		this.passwordConfirm = passwordConfirm;
 		this.canShowAllCompany = canShowAllCompany;
-		this.companyList = companyList;
+		this.companyIdList = companyIdList;
 	}
 
 	public Integer getId() {
@@ -111,20 +107,19 @@ public class AdminRegisterForm {
 		this.canShowAllCompany = canShowAllCompany;
 	}
 
-	public List<Company> getCompanyList() {
-		return companyList;
+	public List<Integer> getCompanyIdList() {
+		return companyIdList;
 	}
 
-	public void setCompanyList(List<Company> companyList) {
-		this.companyList = companyList;
+	public void setCompanyIdList(List<Integer> companyIdList) {
+		this.companyIdList = companyIdList;
 	}
 
 	@Override
 	public String toString() {
 		return "AdminRegisterForm [id=" + id + ", name=" + name + ", kana=" + kana + ", email=" + email + ", password="
 				+ password + ", passwordConfirm=" + passwordConfirm + ", canShowAllCompany=" + canShowAllCompany
-				+ ", companyList=" + companyList + "]";
+				+ ", companyIdList=" + companyIdList + "]";
 	}
-	
-	
+
 }
