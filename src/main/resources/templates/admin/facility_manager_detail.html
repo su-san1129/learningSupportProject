@@ -40,12 +40,12 @@
               </div>
               <div class="form-group">
                 <label for="inputPassword">パスワード:</label>
-                <label class="control-label" style="color: red" th:errors="*{password}" th:field="*{password}" for="inputPassword">パスワードを入力してください</label>
-                <input type="password" id="inputPassword" class="form-control" name="password" placeholder="Password">
+                <label class="control-label" style="color: red" th:errors="*{password}" for="inputPassword">パスワードを入力してください</label>
+                <input type="password" id="inputPassword" class="form-control" name="password" placeholder="Password" >
               </div>
               <div class="form-group">
                 <label for="inputPassword">確認用パスワード:</label>
-                <label class="control-label" style="color: red" th:errors="*{passwordConfirm}" th:field="*{passwordConfirm}" for="inputPasswordConfirm">パスワードを入力してください</label>
+                <label class="control-label" style="color: red" th:errors="*{passwordConfirm}"　for="inputPasswordConfirm">パスワードを入力してください</label>
                 <input type="password" id="inputPassword" class="form-control" name="passwordConfirm" placeholder="Password">
               </div>
               <div class="form-group">
@@ -55,6 +55,7 @@
                   </div>
                   <div class="col-sm-12">
                     <label class="radio-inline">
+                      <label class="control-label" style="color: red" th:errors="*{canShowAllCompany}"　for="inputPasswordConfirm">パスワードを入力してください</label>
                       <input type="radio" name="responsibleCompany" checked="checked" onclick="responsibleCompanies();">
                       全ての企業
                     </label>
@@ -78,6 +79,7 @@
               <div class="form-group">
                 <div class="row">
                   <div class="col-sm-12">
+                    <input type="hidden" name="id" th:field="*{id}" />
                     <button type="submit" class="btn btn-primary">登録</button>
                   </div>
                 </div>

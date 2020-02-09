@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.api.Database;
 import com.example.demo.domain.DailyReport;
@@ -15,6 +16,7 @@ import com.example.demo.repository.DailyReportRepository;
 import com.example.demo.security.student.LoginStudent;
 
 @Service
+@Transactional
 public class DailyReportService {
 	
 	@Autowired

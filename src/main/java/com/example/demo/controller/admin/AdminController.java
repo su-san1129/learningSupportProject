@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.domain.Admin;
+import com.example.demo.domain.AdminResponsibleCompany;
 import com.example.demo.form.AdminRegisterForm;
 import com.example.demo.service.AdminService;
 
@@ -120,10 +121,12 @@ public class AdminController {
 	}
 
 	@RequestMapping("/facility_manager_detail/{id}")
-	public String facilityManagerDetail(@PathVariable Integer id,Model model) {
-		AdminRegisterForm form = new AdminRegisterForm();
-		BeanUtils.copyProperties( adminService.showAdmin(id), form);
-		model.addAttribute("adminRegisterForm", form);
+	public String facilityManagerDetail(@PathVariable Integer id,Model model, AdminRegisterForm form) {
+		if(form.getName() == null) {
+			form = new AdminRegisterForm();
+			BeanUtils.copyProperties( adminService.showAdmin(id), form);
+			model.addAttribute("adminRegisterForm", form);
+		}
 		model.addAttribute("companies", adminService.showCompanies());
 		return "admin/facility_manager_detail";
 	}
@@ -137,12 +140,24 @@ public class AdminController {
 	
 	@PostMapping("/facility_manager_edit")
 	public String facilityManagerEdit(@Validated AdminRegisterForm form, BindingResult result, Model model) {
-		if(result.hasErrors()) {
-			return facilityManagerDetail(form.getId(), model);
-		}
 		if (!form.getPassword().equals(form.getPasswordConfirm())) {
 			result.rejectValue("password", "", "パスワードが一致しませんでした。");
-			return facilityManagerDetail(form.getId(), model);
+		}
+		if(result.hasErrors()) {
+			return facilityManagerDetail(form.getId(), model, form);
+		}
+		// 企業IDを持っていた場合は、運営者担当企業テーブルに保存.
+		if(form.getCompanyIdList() != null) {
+			form.getCompanyIdList().forEach( id -> {
+				AdminResponsibleCompany arc = new AdminResponsibleCompany();
+				arc.setAdminId(form.getId());
+				arc.setCompanyId(id);
+				adminService.arcSave(arc);
+			});
+		// 企業IDを持っていない場合はすべての企業を見られる権限を持つ.
+		} else {
+			form.setCanShowAllCompany(true);
+			adminService.adminSave(form);
 		}
 		return "redirect:/admin/facility_manager_list";
 		

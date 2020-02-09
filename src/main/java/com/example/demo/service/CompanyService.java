@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.domain.Company;
 import com.example.demo.domain.CompanyMember;
@@ -15,6 +16,7 @@ import com.example.demo.repository.CompanyMemberRepository;
 import com.example.demo.repository.CompanyRepository;
 
 @Service
+@Transactional
 public class CompanyService {
 	
 	@Autowired

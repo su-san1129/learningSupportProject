@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.domain.Admin;
 import com.example.demo.domain.AdminResponsibleCompany;
@@ -22,6 +23,7 @@ import com.example.demo.repository.CompanyRepository;
  *
  */
 @Service
+@Transactional
 public class AdminService {
 
 	@Autowired
@@ -65,6 +67,10 @@ public class AdminService {
 	 */
 	public List<Admin> showAllAdmins() {
 		return adminReposiory.findAll();
+	}
+	
+	public List<Admin> showAllAdminsIncludeResponsibleCompany(){
+		return adminReposiory.findAllIncludeCompanyList();
 	}
 
 	/**

@@ -1,6 +1,5 @@
 package com.example.demo.repository;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ public class AdminResponsibleCompanyRepository {
 
 	// ロギング処理
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdminResponsibleCompanyRepository.class);
-	
+
 //	private final RowMapper<AdminResponsibleCompany> ARC_ROWMAPPER = (rs, i) -> {
 //		Integer id = rs.getInt("id");
 //		Integer adminId = rs.getInt("admin_id");
@@ -28,7 +27,6 @@ public class AdminResponsibleCompanyRepository {
 //		return new AdminResponsibleCompany(id, adminId, companyId);
 //	};
 
-	
 	/**
 	 * 運営者の担当企業を追加する.
 	 * 
@@ -51,7 +49,7 @@ public class AdminResponsibleCompanyRepository {
 		}
 		template.update(sql.toString(), param);
 	}
-	
+
 	/**
 	 * 一件削除.
 	 * 
