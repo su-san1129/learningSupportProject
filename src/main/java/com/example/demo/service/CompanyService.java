@@ -31,6 +31,7 @@ public class CompanyService {
 	@Autowired
 	private CompanyMemberRepository companyMemberRepository;
 	
+	
 	@Autowired
 	private PasswordEncoder encoder;
 	
@@ -75,5 +76,4 @@ public class CompanyService {
 		return companyMemberRepository.load(id);
 	}
 	
-
 }
