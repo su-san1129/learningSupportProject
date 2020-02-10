@@ -1,5 +1,6 @@
 package com.example.demo.domain;
 
+
 /**
  * 運営者が担当する企業を表すドメイン.
  * 
@@ -14,17 +15,20 @@ public class AdminResponsibleCompany {
 	private Integer adminId;
 	/** 企業ID */
 	private Integer companyId;
+	/** 企業リスト */
+	private Company company;
 
 	public AdminResponsibleCompany() {
 		super();
 		// TODO 自動生成されたコンストラクター・スタブ
 	}
 
-	public AdminResponsibleCompany(Integer id, Integer adminId, Integer companyId) {
+	public AdminResponsibleCompany(Integer id, Integer adminId, Integer companyId, Company company) {
 		super();
 		this.id = id;
 		this.adminId = adminId;
 		this.companyId = companyId;
+		this.company = company;
 	}
 
 	public Integer getId() {
@@ -51,9 +55,18 @@ public class AdminResponsibleCompany {
 		this.companyId = companyId;
 	}
 
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
 	@Override
 	public String toString() {
-		return "AdminResponsibleCompany [id=" + id + ", adminId=" + adminId + ", companyId=" + companyId + "]";
+		return "AdminResponsibleCompany [id=" + id + ", adminId=" + adminId + ", companyId=" + companyId + ", company="
+				+ company + "]";
 	}
 
 }

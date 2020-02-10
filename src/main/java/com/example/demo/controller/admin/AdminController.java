@@ -124,16 +124,20 @@ public class AdminController {
 	public String facilityManagerDetail(@PathVariable Integer id,Model model, AdminRegisterForm form) {
 		if(form.getName() == null) {
 			form = new AdminRegisterForm();
-			BeanUtils.copyProperties( adminService.showAdmin(id), form);
+			BeanUtils.copyProperties( adminService.showAdminIncludeCompany(id), form);
 			model.addAttribute("adminRegisterForm", form);
 		}
+		// 運営管理者がもつ企業一覧(バリデーション時にデータが消えることを防ぐため、フォームに持たせない)
+		// adminRegisterFormではなく、adminのドメインをviewに渡せばSQLの発行回数は減らせそう。
+		model.addAttribute("adminHasComnpanies", adminService.showAdminHasCompanies(id));
+		// 全企業情報
 		model.addAttribute("companies", adminService.showCompanies());
 		return "admin/facility_manager_detail";
 	}
 
 	@RequestMapping("/facility_manager_list")
 	public String facilityManagerList(Model model) {
-		List<Admin> adminList = adminService.showAllAdmins();
+		List<Admin> adminList = adminService.showAllAdminsIncludeResponsibleCompany();
 		model.addAttribute("admins", adminList);
 		return "admin/facility_manager_list";
 	}
@@ -152,13 +156,14 @@ public class AdminController {
 				AdminResponsibleCompany arc = new AdminResponsibleCompany();
 				arc.setAdminId(form.getId());
 				arc.setCompanyId(id);
+				form.setCanShowAllCompany(false);
 				adminService.arcSave(arc);
 			});
 		// 企業IDを持っていない場合はすべての企業を見られる権限を持つ.
 		} else {
 			form.setCanShowAllCompany(true);
-			adminService.adminSave(form);
 		}
+		adminService.adminSave(form);
 		return "redirect:/admin/facility_manager_list";
 		
 	}

@@ -140,6 +140,34 @@ public class AdminRepository {
 
 	}
 
+	public Admin loadIncludeCompanyList(Integer id) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT ");
+		sql.append("a.id, a.name, a.kana, a.email, a.password, a.can_show_all_company, ");
+		sql.append("c.id AS company_id, ");
+		sql.append("c.name AS company_name, ");
+		sql.append("c.kana AS company_kana, ");
+		sql.append("remarks, ");
+		sql.append("cm.id AS cm_id, ");
+		sql.append("cm.name AS cm_name, ");
+		sql.append("cm.kana AS cm_kana, ");
+		sql.append("cm.email AS cm_email, ");
+		sql.append("cm.password AS cm_password ");
+		sql.append("FROM admins a LEFT OUTER JOIN ");
+		sql.append("admin_responsible_companies ac ON a.id = ac.admin_id  LEFT OUTER JOIN ");
+		sql.append("companies c ON ac.company_id = c.id  LEFT OUTER JOIN ");
+		sql.append("company_members cm ON c.id = cm.company_id  ");
+		sql.append("WHERE a.id = :id  ");
+		sql.append("ORDER BY a.id, c.id, cm.id");
+		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
+		List<Admin> admins = template.query(sql.toString(), param, ADMIN_RSE);
+		if (admins.size() == 0) {
+			LOGGER.warn("検索された管理者は存在しません。");
+			return null;
+		}
+		return admins.get(0);
+	}
+
 	/**
 	 * 管理者の全件検索.
 	 * 

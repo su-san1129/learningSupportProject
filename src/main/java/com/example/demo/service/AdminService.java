@@ -83,6 +83,9 @@ public class AdminService {
 		return adminReposiory.load(id);
 	}
 	
+	public Admin showAdminIncludeCompany(Integer id) {
+		return adminReposiory.loadIncludeCompanyList(id);
+	}
 	/**
 	 * 企業担当者を含まない会社リスト.
 	 * 
@@ -107,6 +110,16 @@ public class AdminService {
 	 */
 	public void arcDelete(Integer arcId) {
 		adminResponsibleCompany.deleteById(arcId);
+	}
+	
+	/**
+	 * 運営管理者がもつ企業一覧.
+	 * @param id 運営管理者ID
+	 * @return 運営管理者がもつ企業
+	 * 
+	 */
+	public List<AdminResponsibleCompany> showAdminHasCompanies(Integer id){
+		return adminResponsibleCompany.findByAdminId(id);
 	}
 
 }
