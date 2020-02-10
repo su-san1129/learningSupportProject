@@ -41,6 +41,16 @@
 							<div class="form-group">
 								<div class="row">
 									<div class="col-sm-12">
+										<label for="inputInstructorKana">講師名（フリガナ）:</label>
+										<label class="control-label" style="color: red" for="inputInstructorName"
+											th:errors="*{kana}">講師名を入力してください</label>
+										<input type="text" id="inputInstructorKana" class="form-control" th:field="*{kana}">
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12">
 										<label for="inputInstructorEmail">メール:</label>
 										<label class="control-label" style="color: red" 　for="inputInstructorEmail"
 											th:errors="*{email}">メールを入力してください</label>
@@ -89,6 +99,7 @@
 							<div class="form-group">
 								<div class="row">
 									<div class="col-sm-12">
+										<input type="hidden" name="id" th:field="*{id}">
 										<button type="submit" class="btn btn-primary">登録</button>
 									</div>
 								</div>

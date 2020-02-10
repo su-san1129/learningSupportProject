@@ -55,7 +55,7 @@
 		<!-- add training -->
 		<div class="row">
 			<div class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
-				<a th:href="@{/admin/training_list_detail}"><button type="submit" class="btn btn-primary">新規登録</button></a>
+				<a th:href="@{/admin/training_detail}"><button type="submit" class="btn btn-primary">新規登録</button></a>
 			</div>
 		</div>
 		<!-- table -->
@@ -74,26 +74,27 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>2016/04/01 ～ 2016/06/30</td>
-							<td>〇〇企業様向け Java新人研修</td>
-							<td>鈴木一郎</td>
+						<tr th:each="training:${trainings}">
+							<td>[[ ${training.startDate} ]] ～ [[ ${training.endDate} ]]</td>
+							<td>[[ ${training.name} ]]</td>
+							<td>[[ ${training.instructor.name} ]]</td>
 							<td>
-								<a th:href="@{view_daily_report}"><button type="submit">日報</button></a>
+								<a th:href="@{'/admin/view_daily_report/' + ${training.id} }"><button type="submit">日報</button></a>
 							</td>
 							<td>
-								<a th:href="@{view_weekly_report}"><button type="submit">週報</button></a>
+								<a th:href="@{'/admin/view_weekly_report/' + ${training.id} }"><button type="submit">週報</button></a>
 							</td>
 							<td>
-								<a th:href="@{training_detail}"><button type="submit">編集</button></a>
+								<a th:href="@{'/admin/training_detail?id' + ${training.id} }"><button type="submit">編集</button></a>
 							</td>
 							<td>
-								<a th:href="@{training_import_students}"><button type="submit">受講者登録</button>
+								<a th:href="@{'/admin/training_import_students'}"><button type="submit">受講者登録</button>
 								</a>
 							</td>
 						</tr>
 					</tbody>
 				</table>
+				<div th:if="${trainings == null }" class="text-center">まだ研修はありません。</div>
 			</div>
 		</div>
 	</div>

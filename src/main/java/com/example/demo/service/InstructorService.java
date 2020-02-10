@@ -25,6 +25,7 @@ public class InstructorService {
 	
 	@Autowired
 	private PasswordEncoder encoder;
+	
 	/**
 	 * 講師の全件検索.
 	 * 
@@ -32,6 +33,10 @@ public class InstructorService {
 	 */
 	public List<Instructor> showAllInstructor(){
 		return instructorRepository.findAll();
+	}
+	
+	public Instructor showInstructor(Integer id) {
+		return instructorRepository.load(id);
 	}
 	
 	/**

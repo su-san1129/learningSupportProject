@@ -17,10 +17,10 @@ import com.example.demo.domain.Instructor;
 
 @Repository
 public class InstructorRepositroy {
-	
+
 	@Autowired
 	private NamedParameterJdbcTemplate template;
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(InstructorRepositroy.class);
 
 	private final RowMapper<Instructor> INSTRUCTOR_ROWMAPPER = (rs, i) -> {
@@ -33,17 +33,34 @@ public class InstructorRepositroy {
 		String remarks = rs.getString("remarks");
 		return new Instructor(id, name, kana, email, password, affiliation, remarks);
 	};
-	
+
 	/**
 	 * 講師情報の全件検索.
 	 * 
 	 * @return 講師情報
 	 */
-	public List<Instructor> findAll(){
+	public List<Instructor> findAll() {
 		String sql = "SELECT * FROM instructors ORDER BY id";
 		return template.query(sql, INSTRUCTOR_ROWMAPPER);
 	}
-	
+
+	/**
+	 * 講師の一件検索.
+	 * 
+	 * @param id ID
+	 * @return 講師情報.
+	 */
+	public Instructor load(Integer id) {
+		try {
+			String sql = "SELECT * FROM instructors WHERE id = :id";
+			SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
+			return template.queryForObject(sql, param, INSTRUCTOR_ROWMAPPER);
+		} catch (DataAccessException e) {
+			LOGGER.info("ID:" + id + "の講師は見つかりませんでした。");
+			return null;
+		}
+	}
+
 	/**
 	 * 講師情報をDBに保存.
 	 * 
@@ -66,11 +83,11 @@ public class InstructorRepositroy {
 			sql.append("affiliation = :affiliation ");
 			sql.append("remarks = :remarks ");
 			sql.append("WHERE id = :id");
-			LOGGER.info("講師の更新を行いました。ID:"+instructor.getId());
+			LOGGER.info("講師の更新を行いました。ID:" + instructor.getId());
 		}
 		template.update(sql.toString(), param);
 	}
-	
+
 	/**
 	 * メールアドレスで講師情報を取得.
 	 * 

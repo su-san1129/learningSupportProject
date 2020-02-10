@@ -62,18 +62,11 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>講師一郎</td>
-							<td>ichiro@gmail.com</td>
+						<tr th:each="instructor:${instructors}">
+							<td>[[ ${instructor.name} ]]</td>
+							<td>[[ ${instructor.email} ]]</td>
 							<td>
-								<form action="instructor_detail.html" method="post"><button type="submit">編集</button></form>
-							</td>
-						</tr>
-						<tr>
-							<td>講師一郎</td>
-							<td>ichiro@gmail.com</td>
-							<td>
-								<form action="instructor_detail.html" method="post"><button type="submit">編集</button></form>
+								<form action="instructor_detail.html" th:action="@{'/admin/instructor_detail?id=' + ${instructor.id} }" method="post"><button type="submit">編集</button></form>
 							</td>
 						</tr>
 					</tbody>

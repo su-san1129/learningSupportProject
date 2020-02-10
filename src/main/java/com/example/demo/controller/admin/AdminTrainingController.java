@@ -1,14 +1,20 @@
 package com.example.demo.controller.admin;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.form.TrainingRegisterForm;
+import com.example.demo.service.InstructorService;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminTrainingController {
+	
+	@Autowired
+	private InstructorService instructorService;
 	
 	@ModelAttribute
 	public TrainingRegisterForm setUpTrainingForm() {
@@ -21,14 +27,14 @@ public class AdminTrainingController {
 	}
 
 	@RequestMapping("/training_list")
-	public String trainingList() {
+	public String trainingList(Model model) {
 		
 		return "admin/admin_training_list";
 	}
 
 	@RequestMapping("/training_detail")
-	public String trainingDetail() {
-		
+	public String trainingDetail(Model model) {
+		model.addAttribute("instructors", instructorService.showAllInstructor());
 		return "admin/admin_training_detail";
 	}
 }
