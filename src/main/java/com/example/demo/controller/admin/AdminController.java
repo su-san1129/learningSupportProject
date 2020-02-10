@@ -95,16 +95,7 @@ public class AdminController {
 		return "admin/admin_print_daily_report";
 	}
 
-	@RequestMapping("/training_import_students")
-	public String trainingImportStudents() {
-		return "admin/admin_training_import_students";
-	}
-
-	@RequestMapping("/training_list")
-	public String trainingList() {
-		return "admin/admin_training_list";
-	}
-
+	
 	@RequestMapping("/view_daily_report")
 	public String viewDailyReport() {
 		return "admin/admin_view_daily_report";
@@ -115,10 +106,7 @@ public class AdminController {
 		return "admin/admin_view_weekly_report";
 	}
 
-	@RequestMapping("/training_detail")
-	public String trainingDetail() {
-		return "admin/admin_training_detail";
-	}
+	
 
 	@RequestMapping("/facility_manager_detail/{id}")
 	public String facilityManagerDetail(@PathVariable Integer id,Model model, AdminRegisterForm form) {
@@ -168,14 +156,5 @@ public class AdminController {
 		
 	}
 
-	@RequestMapping("/instructor_detail")
-	public String instructorDetail() {
-		return "admin/instructor_detail";
-	}
-
-	@RequestMapping("/instructor_list")
-	public String instructorList() {
-		return "admin/instructor_list";
-	}
-
+	
 }

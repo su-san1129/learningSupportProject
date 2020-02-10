@@ -3,21 +3,41 @@ package com.example.demo.domain;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * 研修を表すドメイン.
+ * 
+ * @author takahiro.suzuki
+ *
+ */
 public class Training {
 
+	/** ID */
 	private Integer id;
+	/** 開始日 */
 	private LocalDate startDate;
+	/** 終了日 */
 	private LocalDate endDate;
+	/** 名前 */
 	private String name;
+	/** 講師ID */
 	private Integer instructorId;
+	/** サブ講師1ID */
 	private Integer subInstructor1Id;
+	/** サブ講師2ID */
 	private Integer subInstructor2Id;
+	/** サブ講師3ID */
 	private Integer subInstructor3Id;
+	/** 講師 */
 	private Instructor instructor;
+	/** サブ講師1 */
 	private Instructor subInstructor1;
+	/** サブ講師2 */
 	private Instructor subInstructor2;
+	/** サブ講師3 */
 	private Instructor subInstructor3;
+	/** 受講生リスト */
 	private List<TrainingStudent> studentList;
+	/** 週報リスト */
 	private List<WeeklyReport> weeklyReport;
 
 	public Training() {

@@ -15,6 +15,12 @@ import com.example.demo.form.CompanyMemberForm;
 import com.example.demo.repository.CompanyMemberRepository;
 import com.example.demo.repository.CompanyRepository;
 
+/**
+ * 企業情報を扱うサービスクラス.
+ * 
+ * @author takahiro.suzuki
+ *
+ */
 @Service
 @Transactional
 public class CompanyService {
@@ -57,6 +63,16 @@ public class CompanyService {
 	
 	public void deleteMember(Integer id) {
 		companyMemberRepository.deleteById(id);
+	}
+	
+	/**
+	 * 企業担当者の一件検索.
+	 * 
+	 * @param id 企業担当者のID
+	 * @return 検索された担当者
+	 */
+	public CompanyMember showCompanyMember(Integer id) {
+		return companyMemberRepository.load(id);
 	}
 	
 

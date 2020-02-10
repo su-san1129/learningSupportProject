@@ -25,28 +25,23 @@
       <div
         class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
         <div class="well">
-          <form method="post" action="company_training_list.html">
-            <fieldset>
-              <legend>企業担当者ログイン </legend>
-              <div class="form-group">
-                <label for="inputEmail">Email:</label> <label
-                  class="control-label" style="color: red"
-                  for="inputError">メールアドレスを入力してください</label> <input
-                  type="text" id="inputEmail" class="form-control"
-                  placeholder="Email">
-              </div>
-              <div class="form-group">
-                <label for="inputPassword">Password:</label> <label
-                  class="control-label" style="color: red"
-                  for="inputPassword">パスワードを入力してください</label> <input
-                  type="text" id="inputPassword" class="form-control"
-                  placeholder="Password">
-              </div>
-              <div class="form-group">
-                <button type="submit" class="btn btn-primary">Login</button>
-              </div>
-            </fieldset>
-          </form>
+          <form method="post" action="company_training_list.html" th:action="@{/company/companyMemberLogin}">
+						<fieldset>
+							<div th:text="${loginError}" style="color:red"></div>
+							<legend>企業担当者ログイン </legend>
+							<div class="form-group">
+								<label for="inputEmail">Email:</label>
+								<input type="text" id="inputEmail" class="form-control" placeholder="Email" name="email">
+							</div>
+							<div class="form-group">
+								<label for="inputPassword">Password:</label>
+								<input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password">
+							</div>
+							<div class="form-group">
+								<button type="submit" class="btn btn-primary">Login</button>
+							</div>
+						</fieldset>
+					</form>
         </div>
       </div>
     </div>

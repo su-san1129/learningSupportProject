@@ -21,9 +21,10 @@ public class CompanyMemberRepository {
 	@Autowired
 	private NamedParameterJdbcTemplate template;
 
-	// ロギング処理
+	/** ロギング処理 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(CompanyMemberRepository.class);
 
+	/** 企業担当者のローマッパー */
 	private final RowMapper<CompanyMember> COMPANY_MEMBER_ROWMAPPER = (rs, i) -> {
 
 		Integer id = rs.getInt("id");
@@ -35,6 +36,13 @@ public class CompanyMemberRepository {
 		return new CompanyMember(id, name, kana, email, password, companyId);
 	};
 
+	
+	/**
+	 * 企業担当者をメールアドレスで検索.
+	 * 
+	 * @param email メールアドレス
+	 * @return 検索された企業担当者
+	 */
 	public CompanyMember findByEmail(String email) {
 		try {
 			String sql = "SELECT * FROM company_members WHERE email = :email";
@@ -80,6 +88,18 @@ public class CompanyMemberRepository {
 		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
 		template.update(sql, param);
 		LOGGER.info("ID:"+ id + "の企業担当者の削除を行いました。");
+	}
+	
+	/**
+	 * 企業担当者の一件検索.
+	 * 
+	 * @param id ID
+	 * @return 検索された企業担当者
+	 */
+	public CompanyMember load(Integer id) {
+		String sql = "SELECT * FROM company_members WHERE id = :id";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
+		return template.queryForObject(sql, param, COMPANY_MEMBER_ROWMAPPER);
 	}
 
 }

@@ -1,31 +1,43 @@
 package com.example.demo.form;
 
+import javax.validation.constraints.NotBlank;
+
 public class CompanyMemberForm {
 
 	/** 従業員ID */
 	private Integer id;
 	/** 名前 */
+	@NotBlank(message="企業担当者名を入力してください")
 	private String name;
 	/** フリガナ */
+	@NotBlank(message="企業担当者名(フリガナ)を入力してください")
 	private String kana;
 	/** メールアドレス */
+	@NotBlank(message="メールアドレスを入力してください")
 	private String email;
 	/** パスワード */
+	@NotBlank(message="パスワードを入力してください")
 	private String password;
+	/** 確認用パスワード */
+	@NotBlank(message="確認用パスワードを入力してください")
+	private String passwordConfirm;
 	/** 企業ID */
 	private Integer companyId;
 
 	public CompanyMemberForm() {
 		super();
+		// TODO 自動生成されたコンストラクター・スタブ
 	}
 
-	public CompanyMemberForm(Integer id, String name, String kana, String email, String password, Integer companyId) {
+	public CompanyMemberForm(Integer id, String name, String kana, String email, String password,
+			String passwordConfirm, Integer companyId) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.kana = kana;
 		this.email = email;
 		this.password = password;
+		this.passwordConfirm = passwordConfirm;
 		this.companyId = companyId;
 	}
 
@@ -69,6 +81,14 @@ public class CompanyMemberForm {
 		this.password = password;
 	}
 
+	public String getPasswordConfirm() {
+		return passwordConfirm;
+	}
+
+	public void setPasswordConfirm(String passwordConfirm) {
+		this.passwordConfirm = passwordConfirm;
+	}
+
 	public Integer getCompanyId() {
 		return companyId;
 	}
@@ -80,7 +100,7 @@ public class CompanyMemberForm {
 	@Override
 	public String toString() {
 		return "CompanyMemberForm [id=" + id + ", name=" + name + ", kana=" + kana + ", email=" + email + ", password="
-				+ password + ", companyId=" + companyId + "]";
+				+ password + ", passwordConfirm=" + passwordConfirm + ", companyId=" + companyId + "]";
 	}
 
 }

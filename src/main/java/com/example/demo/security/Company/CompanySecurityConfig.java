@@ -27,11 +27,11 @@ public class CompanySecurityConfig extends WebSecurityConfigurerAdapter {
 				.anyRequest().authenticated();
 		http.formLogin()
 				.loginPage("/company/login")
-				.loginProcessingUrl("/company/companyLogin")
+				.loginProcessingUrl("/company/companyMemberLogin")
 				.defaultSuccessUrl("/company/training_list", true)
 				.usernameParameter("email")
 				.passwordParameter("password");
-		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout**")).logoutSuccessUrl("/company/login")
+		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/company/logout**")).logoutSuccessUrl("/company/login")
 				.deleteCookies("JSESSIONID").invalidateHttpSession(true);
 	}
 	
