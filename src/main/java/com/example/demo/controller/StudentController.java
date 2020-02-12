@@ -20,13 +20,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.demo.api.Database;
 import com.example.demo.domain.Training;
 import com.example.demo.form.DailyReportForm;
 import com.example.demo.form.StudentRegisterForm;
 import com.example.demo.security.student.LoginStudent;
 import com.example.demo.service.DailyReportService;
 import com.example.demo.service.StudentService;
+import com.example.demo.service.TrainingService;
 
 @Controller
 @RequestMapping("/students")
@@ -38,13 +38,13 @@ public class StudentController {
 
 	@Autowired
 	private DailyReportService dailyReportService;
+	
+	@Autowired
+	private TrainingService trainingService;
 
 	@Autowired
 	private HttpSession session;
 
-	@Autowired
-	private Database database;
-	
 	@ModelAttribute
 	public DailyReportForm setUpDailyReportForm() {
 		return new DailyReportForm();
@@ -113,7 +113,7 @@ public class StudentController {
 
 	@GetMapping("/training_list")
 	public String trainingList(Model model) {
-		List<Training> trainingList = database.trainingList();
+		List<Training> trainingList = trainingService.showAllTraining();
 		model.addAttribute("trainings", trainingList);
 		return "student/student_training_list";
 	}

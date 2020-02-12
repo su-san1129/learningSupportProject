@@ -20,7 +20,7 @@ import com.example.demo.domain.TrainingStudent;
 
 @Repository
 public class StudentRepository {
-	
+
 	@Autowired
 	private NamedParameterJdbcTemplate template;
 
@@ -28,7 +28,7 @@ public class StudentRepository {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdminRepository.class);
 
 	private final RowMapper<Student> STUDENT_ROWMAPPER = (rs, i) -> {
-		
+
 		Integer id = rs.getInt("id");
 		String name = rs.getString("name");
 		String kana = rs.getString("kana");
@@ -39,12 +39,12 @@ public class StudentRepository {
 		List<TrainingStudent> trainingList = new ArrayList<>();
 		return new Student(id, name, kana, email, password, companyId, company, trainingList);
 	};
-	
-	public List<Student> findAll(){
+
+	public List<Student> findAll() {
 		String sql = "SELECT * FROM students ORDER BY id";
 		return template.query(sql, STUDENT_ROWMAPPER);
 	}
-	
+
 	public Student findByEmail(String email) {
 		try {
 			String sql = "SELECT * FROM students WHERE email = :email";
@@ -55,7 +55,23 @@ public class StudentRepository {
 			return null;
 		}
 	}
-	
+
+	public List<Student> findByTrainingId(Integer trainingId) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT ");
+		sql.append("s.id, name, kana, email, password, company_id ");
+		sql.append("FROM ");
+		sql.append("students s ");
+		sql.append("JOIN ");
+		sql.append("training_student ts ");
+		sql.append("ON ");
+		sql.append("s.id = ts.student_id ");
+		sql.append("WHERE ");
+		sql.append("ts.training_id = :trainingId");
+		SqlParameterSource param = new MapSqlParameterSource().addValue("trainingId", trainingId);
+		return template.query(sql.toString(), param, STUDENT_ROWMAPPER);
+	}
+
 	public void save(Student student) {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(student);
 		StringBuilder sql = new StringBuilder();
@@ -74,10 +90,5 @@ public class StudentRepository {
 		}
 		template.update(sql.toString(), param);
 	}
-
-	
-	
-	
-	
 
 }

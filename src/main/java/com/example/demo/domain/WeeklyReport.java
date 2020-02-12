@@ -1,7 +1,6 @@
 package com.example.demo.domain;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public class WeeklyReport {
 
@@ -9,20 +8,19 @@ public class WeeklyReport {
 	private LocalDate startDate;
 	private String instructorName;
 	private String content;
-	private List<StudentImpression> studentImpressionList;
+	private Integer trainingId;
 
 	public WeeklyReport() {
 		super();
 	}
 
-	public WeeklyReport(Integer id, LocalDate startDate, String instructorName, String content,
-			List<StudentImpression> studentImpressionList) {
+	public WeeklyReport(Integer id, LocalDate startDate, String instructorName, String content, Integer trainingId) {
 		super();
 		this.id = id;
 		this.startDate = startDate;
 		this.instructorName = instructorName;
 		this.content = content;
-		this.studentImpressionList = studentImpressionList;
+		this.trainingId = trainingId;
 	}
 
 	public Integer getId() {
@@ -57,12 +55,18 @@ public class WeeklyReport {
 		this.content = content;
 	}
 
-	public List<StudentImpression> getStudentImpressionList() {
-		return studentImpressionList;
+	public Integer getTrainingId() {
+		return trainingId;
 	}
 
-	public void setStudentImpressionList(List<StudentImpression> studentImpressionList) {
-		this.studentImpressionList = studentImpressionList;
+	public void setTrainingId(Integer trainingId) {
+		this.trainingId = trainingId;
+	}
+
+	@Override
+	public String toString() {
+		return "WeeklyReport [id=" + id + ", startDate=" + startDate + ", instructorName=" + instructorName
+				+ ", content=" + content + ", trainingId=" + trainingId + "]";
 	}
 
 }

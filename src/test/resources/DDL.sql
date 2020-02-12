@@ -87,6 +87,7 @@ create table weekly_reports (
   , start_date date not null
   , instructor_name varchar(50) not null
   , content text
+  , training_id integer not null
   , constraint weekly_reports_PKC primary key (id)
 ) ;
 

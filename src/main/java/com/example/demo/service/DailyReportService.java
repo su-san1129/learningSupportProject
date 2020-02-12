@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -9,7 +8,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.api.Database;
 import com.example.demo.domain.DailyReport;
 import com.example.demo.form.DailyReportForm;
 import com.example.demo.repository.DailyReportRepository;
@@ -18,9 +16,6 @@ import com.example.demo.security.student.LoginStudent;
 @Service
 @Transactional
 public class DailyReportService {
-	
-	@Autowired
-	private Database database;
 	
 	@Autowired
 	private DailyReportRepository dailyReportRepository;
@@ -40,10 +35,7 @@ public class DailyReportService {
 	}
 	
 	public List<DailyReport> showDailyReportByTrainingId(Integer id){
-		List<DailyReport> dailyReportList = new ArrayList<>();
-		dailyReportList.add(database.getDailyReport());
-		dailyReportList.add(database.getDailyReport());
-		return dailyReportList;
+		return null;
 	}
 
 }

@@ -36,7 +36,7 @@ public class Training {
 	/** サブ講師3 */
 	private Instructor subInstructor3;
 	/** 受講生リスト */
-	private List<TrainingStudent> studentList;
+	private List<Student> studentList;
 	/** 週報リスト */
 	private List<WeeklyReport> weeklyReport;
 
@@ -46,8 +46,8 @@ public class Training {
 
 	public Training(Integer id, LocalDate startDate, LocalDate endDate, String name, Integer instructorId,
 			Integer subInstructor1Id, Integer subInstructor2Id, Integer subInstructor3Id, Instructor instructor,
-			Instructor subInstructor1, Instructor subInstructor2, Instructor subInstructor3,
-			List<TrainingStudent> studentList, List<WeeklyReport> weeklyReport) {
+			Instructor subInstructor1, Instructor subInstructor2, Instructor subInstructor3, List<Student> studentList,
+			List<WeeklyReport> weeklyReport) {
 		super();
 		this.id = id;
 		this.startDate = startDate;
@@ -161,11 +161,11 @@ public class Training {
 		this.subInstructor3 = subInstructor3;
 	}
 
-	public List<TrainingStudent> getStudentList() {
+	public List<Student> getStudentList() {
 		return studentList;
 	}
 
-	public void setStudentList(List<TrainingStudent> studentList) {
+	public void setStudentList(List<Student> studentList) {
 		this.studentList = studentList;
 	}
 
