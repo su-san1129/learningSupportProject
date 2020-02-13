@@ -96,16 +96,6 @@ public class AdminController {
 	}
 
 	
-	@RequestMapping("/view_daily_report")
-	public String viewDailyReport() {
-		return "admin/admin_view_daily_report";
-	}
-
-	@RequestMapping("/view_weekly_report")
-	public String weeklyReport() {
-		return "admin/admin_view_weekly_report";
-	}
-
 	
 
 	@RequestMapping("/facility_manager_detail/{id}")

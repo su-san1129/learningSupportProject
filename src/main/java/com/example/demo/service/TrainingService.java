@@ -16,13 +16,19 @@ public class TrainingService {
 	@Autowired
 	private TrainingRepository trainingRepository;
 	
-	public void save(TrainingRegisterForm form) {
+	public void trainingSave(TrainingRegisterForm form) {
 		Training training = new Training();
 		BeanUtils.copyProperties(form, training);
+		training.setStartDate(form.toLocalDateStartDate());
+		training.setEndDate(form.toLocalDateEndDate());
 		trainingRepository.save(training);
 	}
 
 	public List<Training> showAllTraining() {
 		return trainingRepository.findAll();
+	}
+	
+	public Training showTraining(Integer id) {
+		return trainingRepository.load(id);
 	}
 }

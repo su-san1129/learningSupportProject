@@ -22,7 +22,7 @@
       <div class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
         <!-- 背景をグレーに、埋め込んだようなコンポーネント -->
         <div class="well">
-          <form method="post" action="admin_training_list.html" th:action="@{admin/instructor_insert}"
+          <form method="post" action="admin_training_list.html" th:action="@{/admin/training_register}"
             th:object="${trainingRegisterForm}">
             <fieldset>
               <legend>研修管理 </legend>
@@ -47,12 +47,12 @@
                   </div>
                   <div class="col-sm-5">
                     <input type="date" name="startDate" id="name" class="form-control input-sm"
-                      th:field="*{startDate}" />
+                      th:value="*{startDate}" />
                   </div>
                   <label for="continent" class="control-label col-sm-1">～</label>
                   <div class="col-sm-5">
                     <input type="date" name="endDate" id="continent" class="form-control input-sm"
-                      th:field="*{endDate}" />
+                      th:value="*{endDate}" />
                   </div>
                 </div>
               </div>
@@ -64,7 +64,11 @@
                       th:errors="*{instructorId}">メイン講師を選択してください</label>
                     <select name="instructorId" class="form-control instructorSelectForm">
                       <option value="0">選択してください</option>
-                      <option th:each="instructor:${instructors}" th:value="${instructor.id}">[[ ${instructor.name} ]]
+                      <option 
+                        th:each="instructor:${instructors}" 
+                        th:value="${instructor.id}"
+                        th:selected="${instructor.id == trainingRegisterForm.instructorId}">
+                        [[ ${instructor.name} ]]
                       </option>
                     </select>
                   </div>
@@ -76,7 +80,19 @@
                     <label for="inputLecturer">サブ講師:</label>
                     <select name="subInstructor1Id" class="form-control instructorSelectForm">
                       <option value="0">選択してください</option>
-                      <option th:each="instructor:${instructors}" th:value="${instructor.id}">[[ ${instructor.name} ]]
+                      <option 
+                        th:if="instructorRegisterForm.subInstructor1Id != null"
+                        th:each="instructor:${instructors}" 
+                        th:value="${instructor.id}"
+                        th:selected="${instructor.id == trainingRegisterForm.subInstructor1Id}">
+                        [[ ${instructor.name} ]]
+                      </option>
+                      <option 
+                        th:if="instructorRegisterForm.subInstructor1Id == null"
+                        th:each="instructor:${instructors}" 
+                        th:value="${instructor.id}"
+                        th:selected="${instructor.id == trainingRegisterForm.subInstructor1Id}">
+                        [[ ${instructor.name} ]]
                       </option>
                     </select>
                   </div>
@@ -88,7 +104,19 @@
                     <label for="inputLecturer">サブ講師2:</label>
                     <select name="subInstructor2Id" class="form-control instructorSelectForm">
                       <option value="0">選択してください</option>
-                      <option th:each="instructor:${instructors}" th:value="${instructor.id}">[[ ${instructor.name} ]]
+                      <option 
+                        th:if="instructorRegisterForm.subInstructor2Id != null"
+                        th:each="instructor:${instructors}" 
+                        th:value="${instructor.id}"
+                        th:selected="${instructor.id == trainingRegisterForm.subInstructor2Id}">
+                        [[ ${instructor.name} ]]
+                      </option>
+                      <option 
+                        th:if="instructorRegisterForm.subInstructor2Id == null"
+                        th:each="instructor:${instructors}" 
+                        th:value="${instructor.id}"
+                        th:selected="${instructor.id == trainingRegisterForm.subInstructor2Id}">
+                        [[ ${instructor.name} ]]
                       </option>
                     </select>
                   </div>
@@ -99,7 +127,19 @@
                       <label for="inputLecturer">サブ講師3:</label>
                       <select name="subInstructor3Id" class="form-control instructorSelectForm">
                         <option value="0">選択してください</option>
-                        <option th:each="instructor:${instructors}" th:value="${instructor.id}">[[ ${instructor.name} ]]
+                        <option 
+                          th:if="instructorRegisterForm.subInstructor3Id != null"
+                          th:each="instructor:${instructors}" 
+                          th:value="${instructor.id}"
+                          th:selected="${instructor.id == trainingRegisterForm.subInstructor3Id}">
+                          [[ ${instructor.name} ]]
+                        </option>
+                        <option 
+                          th:if="instructorRegisterForm.subInstructor3Id == null"
+                          th:each="instructor:${instructors}" 
+                          th:value="${instructor.id}"
+                          th:selected="${instructor.id == trainingRegisterForm.subInstructor3Id}">
+                          [[ ${instructor.name} ]]
                         </option>
                       </select>
                     </div>
@@ -118,6 +158,7 @@
                 <div class="form-group">
                   <div class="row">
                     <div class="col-sm-12">
+                      <input type="hidden" name="id" th:field="*{id}">
                       <button type="submit" class="btn btn-primary">登録</button>
                     </div>
                   </div>
@@ -131,7 +172,7 @@
   </div>
   <div th:replace="shared/_footer"></div>
   <script>
-   
+
   </script>
 </body>
 

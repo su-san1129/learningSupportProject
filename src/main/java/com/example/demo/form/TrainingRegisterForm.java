@@ -1,7 +1,11 @@
 package com.example.demo.form;
 
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.example.demo.domain.Instructor;
 import com.example.demo.domain.TrainingStudent;
@@ -12,12 +16,16 @@ public class TrainingRegisterForm {
 	/** ID */
 	private Integer id;
 	/** 開始日 */
-	private Date startDate;
+	@NotBlank(message="開始日を入力してください")
+	private String startDate;
 	/** 終了日 */
-	private Date endDate;
+	@NotBlank(message="終了日を入力してください")
+	private String endDate;
 	/** 名前 */
+	@NotBlank(message = "名前を入力してください")
 	private String name;
 	/** 講師ID */
+	@NotNull(message = "講師を選択してください")
 	private Integer instructorId;
 	/** サブ講師1ID */
 	private Integer subInstructor1Id;
@@ -41,8 +49,9 @@ public class TrainingRegisterForm {
 	public TrainingRegisterForm() {
 		super();
 	}
+	
 
-	public TrainingRegisterForm(Integer id, Date startDate, Date endDate, String name, Integer instructorId,
+	public TrainingRegisterForm(Integer id, String startDate, String endDate, String name, Integer instructorId,
 			Integer subInstructor1Id, Integer subInstructor2Id, Integer subInstructor3Id, Instructor instructor,
 			Instructor subInstructor1, Instructor subInstructor2, Instructor subInstructor3,
 			List<TrainingStudent> studentList, List<WeeklyReport> weeklyReport) {
@@ -63,6 +72,17 @@ public class TrainingRegisterForm {
 		this.weeklyReport = weeklyReport;
 	}
 	
+	/** 開始日をLocalDate型に変換 */
+	public LocalDate toLocalDateStartDate() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return LocalDate.parse(this.getStartDate(), formatter);
+	}
+	/** 終了日をLocalDate型に変換 */
+	public LocalDate toLocalDateEndDate() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return LocalDate.parse(this.getEndDate(), formatter);
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -71,19 +91,19 @@ public class TrainingRegisterForm {
 		this.id = id;
 	}
 
-	public Date getStartDate() {
+	public String getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public String getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
 
