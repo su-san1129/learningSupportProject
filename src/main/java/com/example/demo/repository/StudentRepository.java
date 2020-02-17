@@ -28,7 +28,6 @@ public class StudentRepository {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdminRepository.class);
 
 	private final RowMapper<Student> STUDENT_ROWMAPPER = (rs, i) -> {
-
 		Integer id = rs.getInt("id");
 		String name = rs.getString("name");
 		String kana = rs.getString("kana");

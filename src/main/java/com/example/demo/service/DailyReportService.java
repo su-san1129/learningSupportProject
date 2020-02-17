@@ -13,6 +13,12 @@ import com.example.demo.form.DailyReportForm;
 import com.example.demo.repository.DailyReportRepository;
 import com.example.demo.security.student.LoginStudent;
 
+/**
+ * 日報を操作するサービスクラス.
+ * 
+ * @author takahiro.suzuki
+ *
+ */
 @Service
 @Transactional
 public class DailyReportService {
@@ -20,10 +26,21 @@ public class DailyReportService {
 	@Autowired
 	private DailyReportRepository dailyReportRepository;
 	
+	/**
+	 * 日報の全件検索.
+	 * 
+	 * @return 日報リスト
+	 */
 	public List<DailyReport> showDailyReportList(){
 		return dailyReportRepository.findAll();
 	}
 	
+	/**
+	 * 日報の保存.
+	 * 
+	 * @param form フォーム
+	 * @param loginStudent ログイン中の受講生
+	 */
 	public void dailyReportSave(DailyReportForm form, @AuthenticationPrincipal LoginStudent loginStudent) {
 		DailyReport report = new DailyReport();
 		BeanUtils.copyProperties(form, report);
@@ -34,8 +51,13 @@ public class DailyReportService {
 		dailyReportRepository.save(report);
 	}
 	
+	/**
+	 * 研修IDで日報を検索.
+	 * @param id 研修ID
+	 * @return 日報
+	 */
 	public List<DailyReport> showDailyReportByTrainingId(Integer id){
-		return null;
+		return dailyReportRepository.findByTrainingId(id);
 	}
 
 }

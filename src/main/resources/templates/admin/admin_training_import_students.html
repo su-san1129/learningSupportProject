@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>学習サポートシステム</title>
-<link href="../css/bootstrap.css" rel="stylesheet">
-<!--[if lt IE 9]>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>学習サポートシステム</title>
+  <link href="../css/bootstrap.css" rel="stylesheet">
+  <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
+
 <body>
   <div class="container">
     <div th:replace="shared/_header"></div>
@@ -42,22 +44,24 @@
       <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
         <!-- 背景をグレーに、埋め込んだようなコンポーネント -->
         <div class="well">
-          <form method="post" action="admin_training_list.html">
+          <form method="post" action="admin_training_list.html" th:action="@{/admin/training_input_student}"
+            enctype="multipart/form-data">
             <fieldset>
               <legend>受講者情報インポート</legend>
               <div class="form-group">
                 <div class="row">
                   <div class="col-sm-12">
-                    <div class="control-label" style="color: red" for="inputError">ファイル取り込みに失敗しました</div>
+                    <div class="control-label" style="color: red" for="inputError" th:text="${fileInputError}">ファイル取り込みに失敗しました</div>
                     <div class="control-label" style="color: red" for="inputError">2行目：会社名が存在しません</div>
                     <div class="control-label" style="color: red" for="inputError">4行目：メールアドレスが重複しています</div>
                     <label for="inputLecturer">受講者情報CSVインポート:</label>
-                    <label class="control-label" style="color: red" for="inputError">ファイルを選択してください</label>
-                    <input type="file" id="exampleInputFile">
+                    <label class="control-label" style="color: red" for="fileError" th:text="${fileError}">ファイルを選択してください</label>
+                    <input type="file" id="exampleInputFile" name="file">
                   </div>
                 </div>
                 <p class="help-block">
-                  (例)<br /> 受講者一郎,ichiro@jukou.com,株式会社〇〇<br /> 受講者次郎,jiro@jukou.com,株式会社〇〇<br /> 受講者三郎,sao@jukou.com,株式会社〇〇<br />
+                  (例)<br /> 受講者一郎,ichiro@jukou.com,株式会社〇〇<br /> 受講者次郎,jiro@jukou.com,株式会社〇〇<br />
+                  受講者三郎,sao@jukou.com,株式会社〇〇<br />
                 </p>
               </div>
               <div class="form-group">
@@ -77,7 +81,7 @@
       <div class="form-group">
         <div class="row">
           <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-sm-12">
-            <button type="submit" class="btn btn-primary">以下の内容で登録する</button>
+            <button type="submit" th:if="${students}" class="btn btn-primary">以下の内容で登録する</button>
           </div>
         </div>
       </div>
@@ -94,63 +98,15 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>受講者一郎</td>
-              <td>ichiro@jukou.com</td>
-              <td>株式会社〇〇</td>
-            </tr>
-            <tr>
-              <td>受講者一郎</td>
-              <td>ichiro@jukou.com</td>
-              <td>株式会社〇〇</td>
-            </tr>
-            <tr>
-              <td>受講者一郎</td>
-              <td>ichiro@jukou.com</td>
-              <td>株式会社〇〇</td>
-            </tr>
-            <tr>
-              <td>受講者一郎</td>
-              <td>ichiro@jukou.com</td>
-              <td>株式会社〇〇</td>
-            </tr>
-            <tr>
-              <td>受講者一郎</td>
-              <td>ichiro@jukou.com</td>
-              <td>株式会社〇〇</td>
-            </tr>
-            <tr>
-              <td>受講者一郎</td>
-              <td>ichiro@jukou.com</td>
-              <td>株式会社〇〇</td>
-            </tr>
-            <tr>
-              <td>受講者一郎</td>
-              <td>ichiro@jukou.com</td>
-              <td>株式会社〇〇</td>
-            </tr>
-            <tr>
-              <td>受講者一郎</td>
-              <td>ichiro@jukou.com</td>
-              <td>株式会社〇〇</td>
-            </tr>
-            <tr>
-              <td>受講者一郎</td>
-              <td>ichiro@jukou.com</td>
-              <td>株式会社〇〇</td>
-            </tr>
-            <tr>
-              <td>受講者一郎</td>
-              <td>ichiro@jukou.com</td>
-              <td>株式会社〇〇</td>
-            </tr>
-            <tr>
-              <td>受講者一郎</td>
-              <td>ichiro@jukou.com</td>
-              <td>株式会社〇〇</td>
+            <tr th:each="student:${students}">
+              <td>[[ ${student.name} ]]</td>
+              <td>[[${student.email}]]</td>
+              <td>[[${student.kana}]]</td>
+              <!-- 仮で作ってる -->
             </tr>
           </tbody>
         </table>
+        <div th:unless="${students}" class="text-center">データを取り込んでください。</div>
       </div>
     </div>
 
@@ -158,4 +114,5 @@
   <!-- end container -->
   <div th:replace="shared/_footer"></div>
 </body>
+
 </html>

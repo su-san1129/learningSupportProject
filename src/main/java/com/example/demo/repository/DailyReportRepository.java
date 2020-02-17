@@ -8,11 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.domain.DailyReport;
+import com.example.demo.domain.Student;
 
 @Repository
 public class DailyReportRepository {
@@ -20,10 +22,16 @@ public class DailyReportRepository {
 	@Autowired
 	private NamedParameterJdbcTemplate template;
 
-	// ロギング処理
+	@Autowired
+	private TrainingRepository trainingRepository;
+
+	/** ロギング処理 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(DailyReportRepository.class);
 
+	/** 日報のローマッパー */
 	private final RowMapper<DailyReport> DAILY_REPORT_ROWMAPPER = (rs, i) -> {
+		
+		// 日報のrs
 		Integer id = rs.getInt("id");
 		LocalDate date = rs.getDate("date").toLocalDate();
 		Integer trainingId = rs.getInt("training_id");
@@ -33,15 +41,43 @@ public class DailyReportRepository {
 		String detailIntelligibility = rs.getString("detail_intelligibility");
 		Integer aboutInstructor = rs.getInt("about_instructor");
 		String question = rs.getString("question");
+		
+		// 受講生リスト
+		String name = rs.getString("name");
+		String kana = rs.getString("kana");
+		String email = rs.getString("email");
+		String password = rs.getString("password");
+		Integer companyId = rs.getInt("company_id");
+		Student student = new Student(studentId, name, kana, email, password, companyId, null, null);
+		
+		/* 日報のインスタンスを返す. 
+		 * 研修インスタンスは情報量が多いため、findしたデータを持たせた。
+		 * 処理が重くなるようであればSQLで出力する予定。
+		 * */
 		return new DailyReport(id, date, trainingId, studentId, content, intelligibility, detailIntelligibility,
-				aboutInstructor, question, null, null);
+				aboutInstructor, question, trainingRepository.load(trainingId), student);
 	};
-	
-	public List<DailyReport> findAll(){
-		String sql = "SELECT * FROM daily_reports ORDER BY date";
+
+	/**
+	 * 日報の全件検索.
+	 * 
+	 * @return 日報リスト
+	 */
+	public List<DailyReport> findAll() {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT * FROM daily_reports d ");
+		sql.append("LEFT OUTER JOIN students s ");
+		sql.append("ON d.student_id = s.id ");
+		sql.append("ORDER BY date");
 		LOGGER.info("日報の全件検索を行いました。");
-		return template.query(sql, DAILY_REPORT_ROWMAPPER);
+		return template.query(sql.toString(), DAILY_REPORT_ROWMAPPER);
 	}
+
+	/**
+	 * 日報の保存.
+	 * 
+	 * @param report 日報
+	 */
 	public void save(DailyReport report) {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(report);
 		StringBuilder sql = new StringBuilder();
@@ -68,5 +104,20 @@ public class DailyReportRepository {
 		template.update(sql.toString(), param);
 	}
 
+	/**
+	 * 研修IDで日報を検索.
+	 * 
+	 * @param id ID
+	 * @return 日報リスト
+	 */
+	public List<DailyReport> findByTrainingId(Integer id) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT * FROM daily_reports d ");
+		sql.append("LEFT OUTER JOIN students s ");
+		sql.append("ON d.student_id = s.id ");
+		sql.append("WHERE d.training_id = :trainingId ");
+		SqlParameterSource paramMap = new MapSqlParameterSource().addValue("trainingId", id);
+		return template.query(sql.toString(), paramMap, DAILY_REPORT_ROWMAPPER);
+	}
 
 }
