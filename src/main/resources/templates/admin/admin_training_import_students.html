@@ -51,11 +51,20 @@
               <div class="form-group">
                 <div class="row">
                   <div class="col-sm-12">
-                    <div class="control-label" style="color: red" for="inputError" th:text="${fileInputError}">ファイル取り込みに失敗しました</div>
-                    <div class="control-label" style="color: red" for="inputError">2行目：会社名が存在しません</div>
+                    <div th:if="${noCompanyError}" class="alert alert-danger alert-dismissible" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="閉じる"><span aria-hidden="true">×</span></button>
+                      <strong>Error</strong>：　[[ ${noCompanyError} ]]
+                    </div>
+                    <div th:if="${fileInputError}" class="alert alert-danger alert-dismissible" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="閉じる"><span aria-hidden="true">×</span></button>
+                      <strong>Error</strong>：　[[ ${fileInputError} ]]
+                    </div>
+                    <div th:if="${fileError}" class="alert alert-danger alert-dismissible" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="閉じる"><span aria-hidden="true">×</span></button>
+                      <strong>Error</strong>：　[[ ${fileError} ]]
+                    </div>
                     <div class="control-label" style="color: red" for="inputError">4行目：メールアドレスが重複しています</div>
                     <label for="inputLecturer">受講者情報CSVインポート:</label>
-                    <label class="control-label" style="color: red" for="fileError" th:text="${fileError}">ファイルを選択してください</label>
                     <input type="file" id="exampleInputFile" name="file">
                   </div>
                 </div>
@@ -77,7 +86,7 @@
       </div>
     </div>
 
-    <form>
+    <form th:action="@{/admin/import/insertStudent}">
       <div class="form-group">
         <div class="row">
           <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-sm-12">
@@ -101,7 +110,7 @@
             <tr th:each="student:${students}">
               <td>[[ ${student.name} ]]</td>
               <td>[[${student.email}]]</td>
-              <td>[[${student.kana}]]</td>
+              <td>[[${student.company.name}]]</td>
               <!-- 仮で作ってる -->
             </tr>
           </tbody>

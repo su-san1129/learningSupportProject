@@ -146,10 +146,10 @@ public class CompanyRepository {
 			sql.append("companies ");
 			sql.append("WHERE name = :name ");
 			SqlParameterSource param = new MapSqlParameterSource().addValue("name", name);
-			LOGGER.info("企業の一件検索を行いました。name:" + name);
+			LOGGER.info("企業の一件検索を行いました。企業名:" + name);
 			return template.queryForObject(sql.toString(), param, COMPANY_ROWMAPPER);
 		} catch (DataAccessException e) {
-			LOGGER.info("ID:" + name + "に該当する企業はありませんでした。");
+			LOGGER.info("企業名:" + name + "に該当する企業はありませんでした。");
 			return null;
 		}
 	}

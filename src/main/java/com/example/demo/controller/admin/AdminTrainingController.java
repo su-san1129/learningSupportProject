@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +23,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.domain.Company;
 import com.example.demo.domain.Student;
 import com.example.demo.domain.Training;
 import com.example.demo.form.TrainingRegisterForm;
+import com.example.demo.service.CompanyService;
 import com.example.demo.service.InstructorService;
 import com.example.demo.service.TrainingService;
 
+/**
+ * 運営管理者が研修を扱うコントローラー.
+ * 
+ * @author takahiro.suzuki
+ *
+ */
 @Controller
 @RequestMapping("/admin")
 public class AdminTrainingController {
@@ -38,11 +47,21 @@ public class AdminTrainingController {
 	@Autowired
 	private TrainingService trainingService;
 
+	@Autowired
+	private CompanyService companyService;
+
 	@ModelAttribute
 	public TrainingRegisterForm setUpTrainingForm() {
 		return new TrainingRegisterForm();
 	}
 
+	/**
+	 * 研修受講生のインポートを行うページ.
+	 * 
+	 * @param students 受講生
+	 * @param model    モデル
+	 * @return 研修受講生
+	 */
 	@RequestMapping("/training_import_students")
 	public String trainingImportStudents(@RequestParam(required = false) List<Student> students, Model model) {
 		if (students != null) {
@@ -53,42 +72,68 @@ public class AdminTrainingController {
 
 	/**
 	 * 研修リストに表示する
+	 * 
 	 * @param file
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping("/training_input_student")
 	public String trainingInputStudent(MultipartFile file, Model model) {
-		if(file.isEmpty()) {
+		if (file.isEmpty()) {
 			model.addAttribute("fileError", "ファイルを選択してください");
 			return trainingImportStudents(null, model);
 		}
 		List<Student> students = new ArrayList<>();
+		int tryCount = 2;
 		try {
+			// ファイルの読み込み
 			InputStream fileInput = file.getInputStream();
+			// ファイルをリーダーに変換
 			Reader reader = new InputStreamReader(fileInput);
 			BufferedReader br = new BufferedReader(reader);
+			// 一行目
 			String line = br.readLine();
 			while ((line = br.readLine()) != null) {
 				String[] data = line.split(",");
-				if(data.length < 4 || 4 < data.length) {
+				// 今回はデータ構造が決まっているため、適当なバリデーション
+				if (data.length < 4 || 4 < data.length) {
 					throw new IOException();
 				}
+				// 受講生名
 				String name = data[0];
+				// 受講生メールアドレス
 				String email = data[1];
+				// 受講生の所属する企業名
 				String companyName = data[2];
+				// パスワード
 				String password = data[3];
-				Student student = new Student(null, name, null, email, password, null, null, null);
+				Company company = companyService.showCompanyByName(companyName);
+				if (company == null) {
+					// 見つからない場合の例外処理.
+					throw new SQLException();
+				}
+				/** 本当は、パスワードを自動生成して、メールを飛ばして変更させるプロセスのほうがいい */
+				Student student = new Student(null, name, null, email, password, company.getId(), company, null);
 				students.add(student);
+				tryCount++;
 			}
 		} catch (IOException e) {
 			model.addAttribute("fileInputError", "ファイルの読み込みに失敗しました。");
 			e.printStackTrace();
+		} catch (SQLException e) {
+			model.addAttribute("noCompanyError", tryCount+"行目:企業が存在しませんでした");
+			students = null;
+			e.printStackTrace();
 		}
 		return trainingImportStudents(students, model);
-
 	}
 
+	/**
+	 * 研修リストを表示.
+	 * 
+	 * @param model モデル
+	 * @return 研修リスト
+	 */
 	@RequestMapping("/training_list")
 	public String trainingList(Model model) {
 		List<Training> trainings = trainingService.showAllTraining();
@@ -97,6 +142,13 @@ public class AdminTrainingController {
 		return "admin/admin_training_list";
 	}
 
+	/**
+	 * 研修詳細.
+	 * 
+	 * @param id    ID
+	 * @param model モデル
+	 * @return 研修詳細ページ
+	 */
 	@RequestMapping("/training_detail")
 	public String trainingDetail(@RequestParam(required = false) Optional<Integer> id, Model model) {
 		id.ifPresent(trainingId -> {
