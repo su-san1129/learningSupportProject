@@ -71,12 +71,13 @@ public class StudentRepository {
 		return template.query(sql.toString(), param, STUDENT_ROWMAPPER);
 	}
 
-	public void save(Student student) {
+	public Integer save(Student student) {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(student);
 		StringBuilder sql = new StringBuilder();
 		if (student.getId() == null) {
 			sql.append("INSERT INTO students (name, kana, email, password, company_id) ");
-			sql.append("VALUES (:name, :kana, :email, :password, :companyId);");
+			sql.append("VALUES (:name, :kana, :email, :password, :companyId) RETURNING id;");	
+			return template.queryForObject(sql.toString(), param, Integer.class);
 		} else {
 			sql.append("UPDATE students SET ");
 			sql.append("id = :id, ");
@@ -86,8 +87,9 @@ public class StudentRepository {
 			sql.append("password = :password, ");
 			sql.append("company_id = :companyId ");
 			sql.append("WHERE id = :id");
+			template.update(sql.toString(), param);
+			return student.getId();
 		}
-		template.update(sql.toString(), param);
 	}
 
 }

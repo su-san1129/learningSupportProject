@@ -35,8 +35,8 @@ public class TrainingStudentRepository {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(ts);
 		StringBuilder sql = new StringBuilder();
 		if(ts.getId() == null ) {
-			sql.append("INSERT INTO training_student (id, training_id, student_id ) ");
-			sql.append("VALUES (:id, :trainingId, :studentId) ");
+			sql.append("INSERT INTO training_student (training_id, student_id ) ");
+			sql.append("VALUES (:trainingId, :studentId) ");
 			LOGGER.info("研修ID:"+ ts.getTrainingId() + "に受講生を登録します");
 		} else {
 			sql.append("UPDATE training_student SET ");

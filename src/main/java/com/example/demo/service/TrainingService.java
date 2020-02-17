@@ -5,12 +5,14 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.domain.Training;
 import com.example.demo.form.TrainingRegisterForm;
 import com.example.demo.repository.TrainingRepository;
 
 @Service
+@Transactional
 public class TrainingService {
 	
 	@Autowired

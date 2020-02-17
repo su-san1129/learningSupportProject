@@ -164,7 +164,7 @@ public class StudentController {
 	}
 
 	/** 日報登録に表示する理解度の情報 */
-	private Map<Integer, String> intelligibilityForm() {
+	public static Map<Integer, String> intelligibilityForm() {
 		Map<Integer, String> intelligibilityMap = new HashMap<>();
 		intelligibilityMap.put(1, "良く理解できた");
 		intelligibilityMap.put(2, "概ね理解できた");
@@ -175,7 +175,7 @@ public class StudentController {
 	}
 
 	/** 日報登録に表示する講師評価の情報 */
-	private Map<Integer, String> aboutInstructorForm() {
+	public static Map<Integer, String> aboutInstructorForm() {
 		Map<Integer, String> aboutInstructorMap = new HashMap<>();
 		aboutInstructorMap.put(1, "とても丁寧だった");
 		aboutInstructorMap.put(2, "概ね丁寧だった");

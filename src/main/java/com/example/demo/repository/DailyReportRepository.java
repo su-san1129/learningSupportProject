@@ -116,7 +116,25 @@ public class DailyReportRepository {
 		sql.append("LEFT OUTER JOIN students s ");
 		sql.append("ON d.student_id = s.id ");
 		sql.append("WHERE d.training_id = :trainingId ");
+		sql.append("ORDER BY date ");
 		SqlParameterSource paramMap = new MapSqlParameterSource().addValue("trainingId", id);
+		return template.query(sql.toString(), paramMap, DAILY_REPORT_ROWMAPPER);
+	}
+	
+	/**
+	 * 受講生Idで日報を検索
+	 * @param id 受講生ID
+	 * @return 日報リスト
+	 */
+	public List<DailyReport> findByStudentIdANDTrainingId(Integer studentId, Integer trainingId) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT * FROM daily_reports d ");
+		sql.append("LEFT OUTER JOIN students s ");
+		sql.append("ON d.student_id = s.id ");
+		sql.append("WHERE d.student_id = :studentId AND d.training_id = :trainingId ");
+		sql.append("ORDER BY date ");
+		SqlParameterSource paramMap = new MapSqlParameterSource().addValue("studentId", studentId).addValue("trainingId", trainingId);
+		LOGGER.info("日報を受講生IDで検索しました");
 		return template.query(sql.toString(), paramMap, DAILY_REPORT_ROWMAPPER);
 	}
 

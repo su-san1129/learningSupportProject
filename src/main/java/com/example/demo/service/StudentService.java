@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.domain.Student;
 import com.example.demo.domain.TrainingStudent;
@@ -14,6 +15,7 @@ import com.example.demo.repository.StudentRepository;
 import com.example.demo.repository.TrainingStudentRepository;
 
 @Service
+@Transactional
 public class StudentService {
 	
 	@Autowired
@@ -48,14 +50,14 @@ public class StudentService {
 	 */
 	public void studentSaveByStudent(Student student, Integer trainingId) {
 		student.setPassword(encoder.encode(student.getPassword()));
+		Integer studentId = studentRepository.save(student);
 		// 研修と受講生の中間テーブルを作成
 		TrainingStudent ts = new TrainingStudent();
 		// 受講生のIDをセット
-		ts.setStudentId(student.getId());
+		ts.setStudentId(studentId);
 		// 研修のIDをセット
 		ts.setTrainingId(trainingId);
 		tsRepository.save(ts);
-		studentRepository.save(student);
 	}
 	
 	/**

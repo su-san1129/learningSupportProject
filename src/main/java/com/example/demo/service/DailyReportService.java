@@ -12,6 +12,7 @@ import com.example.demo.domain.DailyReport;
 import com.example.demo.form.DailyReportForm;
 import com.example.demo.repository.DailyReportRepository;
 import com.example.demo.security.student.LoginStudent;
+import com.example.demo.controller.StudentController;
 
 /**
  * 日報を操作するサービスクラス.
@@ -59,5 +60,17 @@ public class DailyReportService {
 	public List<DailyReport> showDailyReportByTrainingId(Integer id){
 		return dailyReportRepository.findByTrainingId(id);
 	}
+	
+	/**
+	 * 受講生IDで日報を検索.
+	 * 
+	 * @param id ID
+	 * @return 日報
+	 */
+	public List<DailyReport> showDailyReportByStudentIdANDTrainingId(Integer studentId, Integer trainingId){
+		return dailyReportRepository.findByStudentIdANDTrainingId(studentId, trainingId);
+	}
+	
+	
 
 }

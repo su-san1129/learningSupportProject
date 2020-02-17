@@ -31,7 +31,7 @@
     <div class="row">
       <!-- search form -->
       <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5">
-        <div class="panel panel-default">
+        <div class="panel panel-default" th:if="${dailyReports.size() != 0}">
           <div class="panel-heading">
             <div class="panel-title">日付</div>
           </div>
@@ -39,12 +39,12 @@
             <form method="post" action="#" class="form-horizontal">
               <div class="form-group">
                 <div class="col-sm-12">
-                  <select class="form-control">
+                  <select class="form-control" id="dailyReportSelectForm">
                     <option 
-                      th:each="date:${displayDate}" 
-                      th:value="${date}" 
+                      th:each="dailyReport:${dailyReports}" 
+                      th:value="${dailyReport.id}" 
                     >
-                      [[ ${date} ]]
+                      [[ ${dailyReport.date} ]]
                     </option>
                   </select>
                 </div>
@@ -57,11 +57,11 @@
             <div class="panel-title">受講生</div>
           </div>
           <div class="panel-body">
-            <form method="post" action="#" class="form-horizontal">
+            <form method="POST" th:action="@{'/admin/view_daily_report/'+ ${training.id} }" class="form-horizontal " id="viewDailyReportForm">
               <div class="form-group">
                 <div class="col-sm-12">
-                  <select class="form-control">
-                    <option th:each="student:${training.studentList}">[[ ${student.name} ]]</option>
+                  <select class="form-control" name="studentId">
+                    <option th:each="student:${training.studentList}" th:value="${student.id}" th:selected="${ postStudentId == student.id }">[[ ${student.name} ]]</option>
                   </select>
                 </div>
               </div>
@@ -69,22 +69,27 @@
           </div>
         </div>
       </div>
+      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7 text-center" th:if="${dailyReports.size() == 0}">
+        <div class="well">表示するデータがありません。</div>
+      </div>
       <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7">
-        <div class="well">
-          <form method="post" action="register_daily_report.html">
+        <div class="well showDailyReport" 
+          th:each="dailyReport,status:${dailyReports}" 
+          th:id="'dailyReport'+${dailyReport.id}"
+          th:classappend="${status.first} ? 'showDaily' : 'hideDaily'"
+        >
+          <form method="post" action="register_daily_report.html" th:action="@{'/'+ ${training.id}}">
             <fieldset>
-              <legend>○月○日の鈴木一郎さんの日報</legend>
+              <legend>
+                [[${dailyReport.date.getMonthValue()}]]月
+                [[${dailyReport.date.getDayOfMonth()}]]日の
+                [[${dailyReport.student.name}]]さんの日報
+              </legend>
               <div class="form-group">
                 <div class="row">
                   <div class="col-sm-12">
                     <label for="inputTodaysContent">学んだ内容:</label>
-                    <pre>
-オブジェクト指向入門
-クラスとオブジェクト
-継承
-インターフェース
-ポリモーフィズム
-カプセル化
+                    <pre th:text="${dailyReport.content}">
 										</pre>
                   </div>
                 </div>
@@ -93,7 +98,7 @@
                 <div class="row">
                   <div class="col-sm-12">
                     <label for="inputEmail">理解度</label>
-                    <pre>
+                    <pre th:text="${intelligibilityForm.get(dailyReport.intelligibility)}">
 概ね理解できた
 										</pre>
                   </div>
@@ -104,7 +109,7 @@
                   <div class="col-sm-12">
                     <label for="inputTodaysIntelligibilityDetail">理解度(詳細):</label>
                     <br />
-                    <pre>
+                    <pre th:text="${dailyReport.detailIntelligibility}">
 ポリモーフィズムの概念(同じ操作で違う振る舞いというもの)がとても難しく感じました。
 
 
@@ -115,7 +120,7 @@
               <div class="form-group">
                 <div class="row">
                   <div class="col-sm-12">
-                    <label for="inputEmail">講師の対応の丁寧さ</label>
+                    <label for="inputEmail" th:text="${aboutInstructorForm.get(dailyReport.aboutInstructor)}">講師の対応の丁寧さ</label>
                     <pre>
 とても丁寧だった
 										</pre>
@@ -127,7 +132,7 @@
                   <div class="col-sm-12">
                     <label for="inputTodaysQuestion">本日の研修内容についてのご質問:</label>
                     <br />
-                    <pre>
+                    <pre th:text="${dailyReport.question}">
 ポリモーフィズムがわかりませんでした。
 
 もう一度説明をお願いしたいです。
@@ -142,8 +147,23 @@
       </div>
     </div>
 
-  </div>
+  </!DOCTYPE>
   <div th:replace="shared/_footer"></div>
+  <script>
+    $('#viewDailyReportForm').change(function(){
+      $('#viewDailyReportForm').submit();
+    });
+    $('#dailyReportSelectForm').change(function(){
+      var id = $(this).val();
+      $('.showDailyReport').hide();
+      $('#dailyReport' + id).show();
+    })
+  </script>
+  <style>
+    .hideDaily{
+      display: none;
+    }
+  </style>
 </body>
 
 </html>

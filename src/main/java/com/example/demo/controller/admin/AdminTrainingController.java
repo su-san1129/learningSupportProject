@@ -212,6 +212,9 @@ public class AdminTrainingController {
 		List<Student> students = (List<Student>) session.getAttribute("students");
 		if(students != null) {
 			students.forEach(student -> {
+				if(student.getKana() == null) {
+					student.setKana("ふりがな");
+				}
 				studentService.studentSaveByStudent(student, trainingId);
 			});
 		}

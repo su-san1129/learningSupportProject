@@ -87,7 +87,7 @@
       </div>
     </div>
 
-    <form th:action="@{/admin/import/insertStudent}">
+    <form method="POST" th:action="@{/admin/import/insertStudent}">
       <input type="hidden" name="trainingId" th:value="${training.id}" />
       <div class="form-group">
         <div class="row">
