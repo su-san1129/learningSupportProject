@@ -2,6 +2,7 @@ package com.example.demo.domain;
 
 public class TrainingStudent {
 
+	private Integer id;
 	private Integer trainingId;
 	private Integer studentId;
 
@@ -9,10 +10,19 @@ public class TrainingStudent {
 		super();
 	}
 
-	public TrainingStudent(Integer trainingId, Integer studentId) {
+	public TrainingStudent(Integer id, Integer trainingId, Integer studentId) {
 		super();
+		this.id = id;
 		this.trainingId = trainingId;
 		this.studentId = studentId;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public Integer getTrainingId() {
@@ -33,7 +43,7 @@ public class TrainingStudent {
 
 	@Override
 	public String toString() {
-		return "TrainingStudent [trainingId=" + trainingId + ", studentId=" + studentId + "]";
+		return "TrainingStudent [id=" + id + ", trainingId=" + trainingId + ", studentId=" + studentId + "]";
 	}
 
 }

@@ -24,6 +24,10 @@
 					<div class="panel-heading">
 						<div class="panel-title">検索条件</div>
 					</div>
+					<div th:if="${successInsert}" class="alert alert-danger alert-dismissible" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="閉じる"><span aria-hidden="true">×</span></button>
+						<strong>Error</strong>：　[[ ${successInsert} ]]
+					</div>
 					<div class="panel-body">
 						<form method="post" action="#" class="form-horizontal">
 							<div class="form-group">
@@ -88,7 +92,7 @@
 								<a th:href="@{'/admin/training_detail?id=' + ${training.id} }"><button type="submit">編集</button></a>
 							</td>
 							<td>
-								<a th:href="@{'/admin/training_import_students'}"><button type="submit">受講者登録</button>
+								<a th:href="@{'/admin/training_import_students/' + ${training.id} }"><button type="submit">受講者登録</button>
 								</a>
 							</td>
 						</tr>

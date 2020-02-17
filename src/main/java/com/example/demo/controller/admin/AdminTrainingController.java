@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,10 +20,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.domain.Company;
 import com.example.demo.domain.Student;
@@ -29,6 +33,7 @@ import com.example.demo.domain.Training;
 import com.example.demo.form.TrainingRegisterForm;
 import com.example.demo.service.CompanyService;
 import com.example.demo.service.InstructorService;
+import com.example.demo.service.StudentService;
 import com.example.demo.service.TrainingService;
 
 /**
@@ -49,6 +54,12 @@ public class AdminTrainingController {
 
 	@Autowired
 	private CompanyService companyService;
+	
+	@Autowired
+	private StudentService studentService;
+	
+	@Autowired
+	private HttpSession session;
 
 	@ModelAttribute
 	public TrainingRegisterForm setUpTrainingForm() {
@@ -62,11 +73,14 @@ public class AdminTrainingController {
 	 * @param model    モデル
 	 * @return 研修受講生
 	 */
-	@RequestMapping("/training_import_students")
-	public String trainingImportStudents(@RequestParam(required = false) List<Student> students, Model model) {
+	@RequestMapping("/training_import_students/{trainingId}")
+	public String trainingImportStudents(@PathVariable Integer trainingId
+			, @RequestParam(required = false) List<Student> students
+			, Model model) {
 		if (students != null) {
 			model.addAttribute("students", students);
 		}
+		model.addAttribute("training", trainingService.showTraining(trainingId));
 		return "admin/admin_training_import_students";
 	}
 
@@ -78,10 +92,10 @@ public class AdminTrainingController {
 	 * @return
 	 */
 	@RequestMapping("/training_input_student")
-	public String trainingInputStudent(MultipartFile file, Model model) {
+	public String trainingInputStudent(MultipartFile file, Integer trainingId, Model model) {
 		if (file.isEmpty()) {
 			model.addAttribute("fileError", "ファイルを選択してください");
-			return trainingImportStudents(null, model);
+			return trainingImportStudents(trainingId, null, model);
 		}
 		List<Student> students = new ArrayList<>();
 		int tryCount = 2;
@@ -115,6 +129,7 @@ public class AdminTrainingController {
 				/** 本当は、パスワードを自動生成して、メールを飛ばして変更させるプロセスのほうがいい */
 				Student student = new Student(null, name, null, email, password, company.getId(), company, null);
 				students.add(student);
+				session.setAttribute("students", students);
 				tryCount++;
 			}
 		} catch (IOException e) {
@@ -125,7 +140,7 @@ public class AdminTrainingController {
 			students = null;
 			e.printStackTrace();
 		}
-		return trainingImportStudents(students, model);
+		return trainingImportStudents(trainingId, students, model);
 	}
 
 	/**
@@ -183,5 +198,26 @@ public class AdminTrainingController {
 		}
 		trainingService.trainingSave(form);
 		return "redirect:/admin/training_list";
+	}
+	
+	/**
+	 * 受講生の保存を行う.
+	 * @param flash フラッシュスコープ
+	 * @param model モデル
+	 * @return 研修リスト
+	 */
+	@PostMapping("/import/insertStudent")
+	public String importInsertStudent(Integer trainingId, RedirectAttributes flash, Model model) {
+		@SuppressWarnings("unchecked")
+		List<Student> students = (List<Student>) session.getAttribute("students");
+		if(students != null) {
+			students.forEach(student -> {
+				studentService.studentSaveByStudent(student, trainingId);
+			});
+		}
+		session.removeAttribute("students");
+		flash.addFlashAttribute("successInsert", "受講生の登録が完了しました");
+		return trainingList(model);
+		
 	}
 }

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>学習サポートシステム</title>
-  <link href="../css/bootstrap.css" rel="stylesheet">
+  <link href="../../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet">
   <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -30,9 +30,9 @@
           </thead>
           <tbody>
             <tr>
-              <td>2016/04/01 ～ 2016/06/30</td>
-              <td>〇〇企業様向け Java新人研修</td>
-              <td>鈴木一郎</td>
+              <td>[[${training.startDate}]] ～ [[${training.endDate}]]</td>
+              <td>[[${training.name}]]</td>
+              <td>[[${training.instructor.name}]]</td>
             </tr>
           </tbody>
         </table>
@@ -66,6 +66,7 @@
                     <div class="control-label" style="color: red" for="inputError">4行目：メールアドレスが重複しています</div>
                     <label for="inputLecturer">受講者情報CSVインポート:</label>
                     <input type="file" id="exampleInputFile" name="file">
+                    <input type="hidden" name="trainingId" th:value="${training.id}" />
                   </div>
                 </div>
                 <p class="help-block">
@@ -87,6 +88,7 @@
     </div>
 
     <form th:action="@{/admin/import/insertStudent}">
+      <input type="hidden" name="trainingId" th:value="${training.id}" />
       <div class="form-group">
         <div class="row">
           <div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-sm-12">
@@ -111,7 +113,6 @@
               <td>[[ ${student.name} ]]</td>
               <td>[[${student.email}]]</td>
               <td>[[${student.company.name}]]</td>
-              <!-- 仮で作ってる -->
             </tr>
           </tbody>
         </table>
