@@ -17,7 +17,7 @@ public class LoginComMember extends User {
 		this.comMember = comMember;
 	}
 
-	public CompanyMember getStudent() {
+	public CompanyMember getComMember() {
 		return comMember;
 	}
 

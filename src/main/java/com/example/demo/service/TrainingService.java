@@ -65,4 +65,14 @@ public class TrainingService {
 	public List<Training> showTrainingListByStudentId(Integer studentId){
 		return trainingRepository.findByStudentId(studentId);
 	}
+	
+	/**
+	 * 研修情報を企業IDで検索.
+	 * 
+	 * @param companyId 企業ID
+	 * @return 企業IDで検索された研修情報
+	 */
+	public List<Training> showTrainigListByCompanyId(Integer companyId){
+		return trainingRepository.findByCompanyId(companyId);
+	}
 }

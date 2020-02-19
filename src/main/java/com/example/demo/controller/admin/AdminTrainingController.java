@@ -1,19 +1,11 @@
 package com.example.demo.controller.admin;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
-import org.postgresql.util.PSQLException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -29,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.demo.domain.Company;
 import com.example.demo.domain.Student;
 import com.example.demo.domain.Training;
 import com.example.demo.form.TrainingRegisterForm;
@@ -98,52 +89,11 @@ public class AdminTrainingController {
 			model.addAttribute("fileError", "ファイルを選択してください");
 			return trainingImportStudents(trainingId, null, model);
 		}
-		List<Student> students = new ArrayList<>();
-		int tryCount = 2;
-		try {
-			// ファイルの読み込み
-			InputStream fileInput = file.getInputStream();
-			// ファイルをリーダーに変換
-			Reader reader = new InputStreamReader(fileInput);
-			BufferedReader br = new BufferedReader(reader);
-			// 一行目
-			String line = br.readLine();
-			while ((line = br.readLine()) != null) {
-				String[] data = line.split(",");
-				// 今回はデータ構造が決まっているため、適当なバリデーション
-				if (data.length < 4 || 4 < data.length) {
-					throw new IOException();
-				}
-				// 受講生名
-				String name = data[0];
-				// 受講生メールアドレス
-				String email = data[1];
-				// 受講生の所属する企業名
-				String companyName = data[2];
-				// パスワード
-				String password = data[3];
-				Company company = companyService.showCompanyByName(companyName);
-				if (company == null) {
-					// 見つからない場合の例外処理.
-					throw new SQLException();
-				}
-				/** 本当は、パスワードを自動生成して、メールを飛ばして変更させるプロセスのほうがいい */
-				Student student = new Student(null, name, null, email, password, company.getId(), company, null);
-				students.add(student);
-				session.setAttribute("students", students);
-				tryCount++;
-			}
-		} catch (IOException e) {
-			model.addAttribute("fileInputError", "ファイルの読み込みに失敗しました。");
-			e.printStackTrace();
-		} catch (SQLException e) {
-			model.addAttribute("noCompanyError", tryCount + "行目:企業が存在しませんでした");
-			students = null;
-			e.printStackTrace();
-		}
+		List<Student> students = companyService.csvInputAndMappingStudent(file, model);
 		return trainingImportStudents(trainingId, students, model);
 	}
 
+	
 	/**
 	 * 研修リストを表示.
 	 * 
@@ -216,20 +166,18 @@ public class AdminTrainingController {
 		if (students != null) {
 			for (Student student : students) {
 				if (student.getKana() == null) {
+					// not null制約に引っかかるため暫定で...
 					student.setKana("ふりがな");
 				}
 				try {
 					studentService.studentSaveByStudent(student, trainingId);
 					count++;
-				} catch (PSQLException e) {
-					e.printStackTrace();
-					System.out.println(e.getErrorCode());
-					System.out.println("PSQLException");
 				} catch (DuplicateKeyException e2) {
 					String str = e2.getRootCause().getMessage();
 					int index = str.indexOf("詳細: ");
 					String error = str.substring(index + 6);
 					model.addAttribute("duplicateError", count+"行目:"+error);
+					// キーの重複エラーが出たら、受講生一覧ページに戻す.
 					return trainingImportStudents(trainingId, students, model);
 				}
 			}

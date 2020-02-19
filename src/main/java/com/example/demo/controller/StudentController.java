@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -38,14 +37,13 @@ import com.example.demo.service.TrainingService;
 @Controller
 @RequestMapping("/students")
 public class StudentController {
-	
 
 	@Autowired
 	private StudentService studentService;
 
 	@Autowired
 	private DailyReportService dailyReportService;
-	
+
 	@Autowired
 	private TrainingService trainingService;
 
@@ -75,7 +73,7 @@ public class StudentController {
 	/**
 	 * 受講者の登録ページ.
 	 * 
-	 * @param form フォーム
+	 * @param form  フォーム
 	 * @param model モデル
 	 * @return 受講者の登録ページ
 	 */
@@ -109,7 +107,7 @@ public class StudentController {
 	}
 
 	@PostMapping("/register/finish")
-	public String registerFinish(StudentRegisterForm form) throws SQLException {
+	public String registerFinish(StudentRegisterForm form) {
 		String password = (String) session.getAttribute("password");
 		form.setPassword(password);
 		form.setCompanyId(1);
@@ -132,14 +130,15 @@ public class StudentController {
 	}
 
 	@GetMapping("/view_daily_report/{trainingId}")
-	public String index(@PathVariable Integer trainingId, Model model, @AuthenticationPrincipal LoginStudent loginStudent) {
+	public String index(@PathVariable Integer trainingId, Model model,
+			@AuthenticationPrincipal LoginStudent loginStudent) {
 		// 研修ID
 		model.addAttribute("trainingId", trainingId);
 		// 受講生ID
 		Integer studentId = loginStudent.getStudent().getId();
 		// 日報リスト
-		model.addAttribute("dailyReports"
-				, dailyReportService.showDailyReportByStudentIdANDTrainingId(studentId, trainingId));
+		model.addAttribute("dailyReports",
+				dailyReportService.showDailyReportByStudentIdANDTrainingId(studentId, trainingId));
 		// 理解度に表示するデータ
 		model.addAttribute("intelligibilityForm", intelligibilityForm());
 		// 講師評価に表示するデータ
@@ -164,19 +163,16 @@ public class StudentController {
 	/**
 	 * 日報の登録処理.
 	 * 
-	 * @param form フォーム
-	 * @param result バリデーションチェック
-	 * @param model モデル
+	 * @param form         フォーム
+	 * @param result       バリデーションチェック
+	 * @param model        モデル
 	 * @param loginStudent ログイン中の受講者情報
 	 * @return 研修リストページ
 	 */
 	@PostMapping("/insert_daily_report")
-	public String insertDailyReport(
-			  @Validated DailyReportForm form
-			, BindingResult result
-			, Model model
-			, @AuthenticationPrincipal LoginStudent loginStudent) {
-		if(result.hasErrors()) {
+	public String insertDailyReport(@Validated DailyReportForm form, BindingResult result, Model model,
+			@AuthenticationPrincipal LoginStudent loginStudent) {
+		if (result.hasErrors()) {
 			return registerDailyReport(form.getTrainingId(), model);
 		}
 		dailyReportService.dailyReportSave(form, loginStudent);

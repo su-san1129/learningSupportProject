@@ -132,6 +132,7 @@ public class AdminController {
 		}
 		// 企業IDを持っていた場合は、運営者担当企業テーブルに保存.
 		if(form.getCompanyIdList() != null) {
+			adminService.arcDeleteByAdminId(form.getId());
 			form.getCompanyIdList().forEach( id -> {
 				AdminResponsibleCompany arc = new AdminResponsibleCompany();
 				arc.setAdminId(form.getId());

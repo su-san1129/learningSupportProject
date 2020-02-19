@@ -248,5 +248,45 @@ public class TrainingRepository {
 		LOGGER.info("ID:" + studentId + "の研修レコードを検索しました");
 		return template.query(sql.toString(), param, TRAINING_ROWMAPPER);
 	}
+	
+	public List<Training> findByCompanyId(Integer companyId){
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT DISTINCT ");
+		sql.append("t.id, t.start_date, t.end_date, t.name, t.instructor_id ");
+		sql.append(", t.sub_instructor_id1, t.sub_instructor_id2, t.sub_instructor_id3 ");
+		sql.append(", i.id AS i_id, i.name AS i_name, i.kana AS i_kana, i.email AS i_email ");
+		sql.append(", i.password AS i_password, i.affiliation AS i_affiliation, i.remarks AS i_remarks ");
+		sql.append(", s1.id AS s1_id, s1.name AS s1_name, s1.kana AS s1_kana, s1.email AS s1_email ");
+		sql.append(", s1.password AS s1_password, s1.affiliation AS s1_affiliation, s1.remarks AS s1_remarks ");
+		sql.append(", s2.id AS s2_id, s2.name AS s2_name, s2.kana AS s2_kana, s2.email AS s2_email ");
+		sql.append(", s2.password AS s2_password, s2.affiliation AS s2_affiliation, s2.remarks AS s2_remarks ");
+		sql.append(", s3.id AS s3_id, s3.name AS s3_name, s3.kana AS s3_kana, s3.email AS s3_email ");
+		sql.append(", s3.password AS s3_password, s3.affiliation AS s3_affiliation, s3.remarks AS s3_remarks ");
+		sql.append("FROM trainings t ");
+		sql.append("LEFT OUTER JOIN ");
+		sql.append("instructors i ");
+		sql.append("ON t.instructor_id = i.id ");
+		sql.append("LEFT OUTER JOIN ");
+		sql.append("instructors s1 ");
+		sql.append("ON t.sub_instructor_id1 = s1.id ");
+		sql.append("LEFT OUTER JOIN ");
+		sql.append("instructors s2 ");
+		sql.append("ON t.sub_instructor_id2 = s2.id ");
+		sql.append("LEFT OUTER JOIN ");
+		sql.append("instructors s3 ");
+		sql.append("ON t.sub_instructor_id3 = s3.id ");
+		sql.append("LEFT OUTER JOIN ");
+		sql.append("training_student ts ");
+		sql.append("ON t.id = ts.training_id ");
+		sql.append("LEFT OUTER JOIN ");
+		sql.append("students stu ");
+		sql.append("ON stu.id = ts.student_id ");
+		sql.append("WHERE stu.company_id = :companyId ");
+		sql.append("ORDER BY t.id, i.id, s1.id, s2.id, s3.id ");
+		SqlParameterSource param = new MapSqlParameterSource().addValue("companyId", companyId);
+		return template.query(sql.toString(), param, TRAINING_ROWMAPPER);
+
+
+	}
 
 }

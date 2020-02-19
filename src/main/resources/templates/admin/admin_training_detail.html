@@ -64,9 +64,7 @@
                       th:errors="*{instructorId}">メイン講師を選択してください</label>
                     <select name="instructorId" class="form-control instructorSelectForm">
                       <option value="0">選択してください</option>
-                      <option 
-                        th:each="instructor:${instructors}" 
-                        th:value="${instructor.id}"
+                      <option th:each="instructor:${instructors}" th:value="${instructor.id}"
                         th:selected="${instructor.id == trainingRegisterForm.instructorId}">
                         [[ ${instructor.name} ]]
                       </option>
@@ -80,17 +78,13 @@
                     <label for="inputLecturer">サブ講師:</label>
                     <select name="subInstructor1Id" class="form-control instructorSelectForm">
                       <option value="0">選択してください</option>
-                      <option 
-                        th:if="instructorRegisterForm.subInstructor1Id != null"
-                        th:each="instructor:${instructors}" 
-                        th:value="${instructor.id}"
+                      <option th:if="instructorRegisterForm.subInstructor1Id != null"
+                        th:each="instructor:${instructors}" th:value="${instructor.id}"
                         th:selected="${instructor.id == trainingRegisterForm.subInstructor1Id}">
                         [[ ${instructor.name} ]]
                       </option>
-                      <option 
-                        th:if="instructorRegisterForm.subInstructor1Id == null"
-                        th:each="instructor:${instructors}" 
-                        th:value="${instructor.id}"
+                      <option th:if="instructorRegisterForm.subInstructor1Id == null"
+                        th:each="instructor:${instructors}" th:value="${instructor.id}"
                         th:selected="${instructor.id == trainingRegisterForm.subInstructor1Id}">
                         [[ ${instructor.name} ]]
                       </option>
@@ -104,65 +98,59 @@
                     <label for="inputLecturer">サブ講師2:</label>
                     <select name="subInstructor2Id" class="form-control instructorSelectForm">
                       <option value="0">選択してください</option>
-                      <option 
-                        th:if="instructorRegisterForm.subInstructor2Id != null"
-                        th:each="instructor:${instructors}" 
-                        th:value="${instructor.id}"
+                      <option th:if="instructorRegisterForm.subInstructor2Id != null"
+                        th:each="instructor:${instructors}" th:value="${instructor.id}"
                         th:selected="${instructor.id == trainingRegisterForm.subInstructor2Id}">
                         [[ ${instructor.name} ]]
                       </option>
-                      <option 
-                        th:if="instructorRegisterForm.subInstructor2Id == null"
-                        th:each="instructor:${instructors}" 
-                        th:value="${instructor.id}"
+                      <option th:if="instructorRegisterForm.subInstructor2Id == null"
+                        th:each="instructor:${instructors}" th:value="${instructor.id}"
                         th:selected="${instructor.id == trainingRegisterForm.subInstructor2Id}">
                         [[ ${instructor.name} ]]
                       </option>
                     </select>
                   </div>
                 </div>
-                <div class="form-group">
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <label for="inputLecturer">サブ講師3:</label>
-                      <select name="subInstructor3Id" class="form-control instructorSelectForm">
-                        <option value="0">選択してください</option>
-                        <option 
-                          th:if="instructorRegisterForm.subInstructor3Id != null"
-                          th:each="instructor:${instructors}" 
-                          th:value="${instructor.id}"
-                          th:selected="${instructor.id == trainingRegisterForm.subInstructor3Id}">
-                          [[ ${instructor.name} ]]
-                        </option>
-                        <option 
-                          th:if="instructorRegisterForm.subInstructor3Id == null"
-                          th:each="instructor:${instructors}" 
-                          th:value="${instructor.id}"
-                          th:selected="${instructor.id == trainingRegisterForm.subInstructor3Id}">
-                          [[ ${instructor.name} ]]
-                        </option>
-                      </select>
-                    </div>
+              </div>
+
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label for="inputLecturer">サブ講師3:</label>
+                    <select name="subInstructor3Id" class="form-control instructorSelectForm">
+                      <option value="0">選択してください</option>
+                      <option th:if="instructorRegisterForm.subInstructor3Id != null"
+                        th:each="instructor:${instructors}" th:value="${instructor.id}"
+                        th:selected="${instructor.id == trainingRegisterForm.subInstructor3Id}">
+                        [[ ${instructor.name} ]]
+                      </option>
+                      <option th:if="instructorRegisterForm.subInstructor3Id == null"
+                        th:each="instructor:${instructors}" th:value="${instructor.id}"
+                        th:selected="${instructor.id == trainingRegisterForm.subInstructor3Id}">
+                        [[ ${instructor.name} ]]
+                      </option>
+                    </select>
                   </div>
                 </div>
-                <div class="form-group">
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <label for="inputLecturer">受講者情報CSVインポート:</label>
-                      <label class="control-label" style="color: red" for="inputError">ファイルを選択してください</label>
-                      <input type="file" id="exampleInputFile">
-                    </div>
-                  </div>
-                  <p class="help-block">(例)受講者一郎,jukou@jukou.com,株式会社〇〇</p>
-                </div>
-                <div class="form-group">
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <input type="hidden" name="id" th:field="*{id}">
-                      <button type="submit" class="btn btn-primary">登録</button>
-                    </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label for="inputLecturer">受講者情報CSVインポート:</label>
+                    <label class="control-label" style="color: red" for="inputError">ファイルを選択してください</label>
+                    <input type="file" id="exampleInputFile">
                   </div>
                 </div>
+                <p class="help-block">(例)受講者一郎,jukou@jukou.com,株式会社〇〇</p>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <input type="hidden" name="id" th:field="*{id}">
+                    <button type="submit" class="btn btn-primary">登録</button>
+                  </div>
+                </div>
+              </div>
             </fieldset>
           </form>
         </div>

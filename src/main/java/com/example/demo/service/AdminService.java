@@ -105,6 +105,15 @@ public class AdminService {
 	}
 	
 	/**
+	 * 運営者の担当企業を全件削除.
+	 * 
+	 * @param adminId 運営者のID
+	 */
+	public void arcDeleteByAdminId(Integer adminId) {
+		adminResponsibleCompany.deleteAllByAdminId(adminId);
+	}
+	
+	/**
 	 * 運営者の担当企業を削除.
 	 * @param arcId 運営者の担当企業Id
 	 */

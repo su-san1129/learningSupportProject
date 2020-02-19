@@ -3,7 +3,6 @@ package com.example.demo.repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.postgresql.util.PSQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +72,7 @@ public class StudentRepository {
 		return template.query(sql.toString(), param, STUDENT_ROWMAPPER);
 	}
 
-	public Integer save(Student student) throws PSQLException, DuplicateKeyException{
+	public Integer save(Student student) throws DuplicateKeyException{
 		SqlParameterSource param = new BeanPropertySqlParameterSource(student);
 		StringBuilder sql = new StringBuilder();
 		if (student.getId() == null) {

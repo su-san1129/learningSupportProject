@@ -21,9 +21,10 @@ public class AdminResponsibleCompanyRepository {
 	@Autowired
 	private NamedParameterJdbcTemplate template;
 
-	// ロギング処理
+	/** ロギング処理 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdminResponsibleCompanyRepository.class);
 
+	/** ローマッパー */
 	private final RowMapper<AdminResponsibleCompany> FIND_COMPANY_ARC_RM = (rs, i) -> {
 		Integer id = rs.getInt("id");
 		Integer adminId = rs.getInt("admin_id");
@@ -69,6 +70,19 @@ public class AdminResponsibleCompanyRepository {
 		String sql = "DELETE FROM admin_responsible_companies WHERE id = :id";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
 		template.update(sql, param);
+	}
+	
+	/**
+	 * 運営管理者Idで担当企業をすべて削除.
+	 * 
+	 * @param adminId 運営管理者ID
+	 */
+	public void deleteAllByAdminId(Integer adminId) {
+		template.update(
+				"DELETE FROM admin_responsible_companies WHERE admin_id = :adminId"
+				, new MapSqlParameterSource().addValue("adminId", adminId)
+				);
+		LOGGER.info("運営管理者ID:"+adminId+"の担当企業を削除しました");
 	}
 
 	/**

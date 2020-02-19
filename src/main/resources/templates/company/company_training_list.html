@@ -24,15 +24,15 @@
               <th>期間</th>
               <th>コース名</th>
               <th>講師</th>
-              <th>週報閲覧</th>
               <th>日報閲覧</th>
+              <th>週報閲覧</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>2016/04/01 ～ 2016/06/30</td>
-              <td>〇〇企業様向け Java新人研修</td>
-              <td>鈴木一郎</td>
+            <tr th:each="training:${trainings}">
+              <td>[[${training.startDate}]] ～ [[${training.endDate}]]</td>
+              <td>[[${training.name}]]</td>
+              <td>[[${training.instructor.name}]]</td>
               <td><form
                   action="../admin/admin_view_daily_report.html"
                   method="post">

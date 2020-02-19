@@ -23,6 +23,8 @@ import com.example.demo.domain.Company;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
+@Sql("/DDL.sql")
+@Sql("/testData.sql")
 public class AdminServiceTest {
 
 	@Autowired
@@ -56,8 +58,6 @@ public class AdminServiceTest {
 	}
 
 	@Test
-	@Sql("/DDL.sql")
-	@Sql("/testData.sql")
 	public void testShowAllAdmins() {
 		List<Admin> admins = adminService.showAllAdmins();
 		assertEquals(admins.size(), 10);
@@ -65,8 +65,6 @@ public class AdminServiceTest {
 	}
 	
 	@Test
-	@Sql("/DDL.sql")
-	@Sql("/testData.sql")
 	public void 担当企業込み運営管理者の一件検索が正しく表示されるか() {
 		
 		Admin admin = adminService.showAdminIncludeCompany(1);
@@ -93,8 +91,6 @@ public class AdminServiceTest {
 	}
 
 	@Test
-	@Sql("/DDL.sql")
-	@Sql("/testData.sql")
 	public void 運営者担当企業込みの全件検索で担当企業は三件であるべき() {
 		List<Admin> admins = adminService.showAllAdminsIncludeResponsibleCompany();
 		assertEquals(admins.size(), 10);
@@ -124,8 +120,6 @@ public class AdminServiceTest {
 	}
 
 	@Test
-	@Sql("/DDL.sql")
-	@Sql("/testData.sql")
 	public void 運営管理者の一件検索で正しい情報が表示されるべき() {
 		
 		Admin admin = adminService.showAdmin(1);
@@ -139,8 +133,6 @@ public class AdminServiceTest {
 	}
 
 	@Test
-	@Sql("/DDL.sql")
-	@Sql("/testData.sql")
 	public void 企業の全件検索は10件表示されるべき() {
 		List<Company> companies = adminService.showCompanies();
 		assertEquals(companies.size(), 10);

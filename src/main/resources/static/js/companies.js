@@ -39,6 +39,5 @@ function addCompany() {
 function deleteCompany(deleteButton) {
   var parent_object = deleteButton.parentNode;
   alert("選択された企業を削除しますか？");
-
   deleteButton.parentNode.parentNode.removeChild(deleteButton.parentNode);
 }
