@@ -68,18 +68,21 @@ public class AdminServiceTest {
 	@Sql("/DDL.sql")
 	@Sql("/testData.sql")
 	public void 担当企業込み運営管理者の一件検索が正しく表示されるか() {
+		
 		Admin admin = adminService.showAdminIncludeCompany(1);
 		assertEquals(admin.getId(), 1);
 		assertEquals(admin.getCompanyList().size(), 3);
 		assertEquals(admin.getCompanyList().get(0).getCompanyMemberList().size(), 3);
 		assertEquals(admin.getCompanyList().get(1).getCompanyMemberList().size(), 3);
 		assertEquals(admin.getCompanyList().get(2).getCompanyMemberList().size(), 3);
+		
 		Admin admin2 = adminService.showAdminIncludeCompany(3);
 		assertEquals(admin2.getId(), 3);
 		assertEquals(admin2.getCompanyList().size(), 3);
 		assertEquals(admin2.getCompanyList().get(0).getCompanyMemberList().size(), 3);
 		assertEquals(admin2.getCompanyList().get(1).getCompanyMemberList().size(), 3);
 		assertEquals(admin2.getCompanyList().get(2).getCompanyMemberList().size(), 3);
+		
 		Admin admin3 = adminService.showAdminIncludeCompany(5);
 		assertEquals(admin3.getId(), 5);
 		assertEquals(admin3.getCompanyList().size(), 3);
@@ -124,12 +127,15 @@ public class AdminServiceTest {
 	@Sql("/DDL.sql")
 	@Sql("/testData.sql")
 	public void 運営管理者の一件検索で正しい情報が表示されるべき() {
+		
 		Admin admin = adminService.showAdmin(1);
 		assertEquals(admin.getId(), 1);
 		assertEquals(admin.getName(), "Madelyn");
+		
 		Admin admin2 = adminService.showAdmin(10);
 		assertEquals(admin2.getId(), 10);
 		assertEquals(admin2.getName(), "Dexter");
+		
 	}
 
 	@Test

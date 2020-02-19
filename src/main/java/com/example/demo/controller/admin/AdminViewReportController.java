@@ -42,11 +42,13 @@ public class AdminViewReportController {
 			Model model) {
 		model.addAttribute("displayDate", setDisplayDate());
 		Training training = trainingService.showTraining(id);
-		List<DailyReport> dailyReports = null;
+		List<DailyReport> dailyReports = new ArrayList<>();
 		if (studentId != null) {
 			dailyReports = dailyReportService.showDailyReportByStudentIdANDTrainingId(studentId, training.getId());
 		} else {
-			dailyReports = dailyReportService.showDailyReportByStudentIdANDTrainingId(training.getStudentList().get(0).getId(), training.getId());
+			if(training.getStudentList().size() != 0) {
+				dailyReports = dailyReportService.showDailyReportByStudentIdANDTrainingId(training.getStudentList().get(0).getId(), training.getId());
+			}
 		}
 		model.addAttribute("dailyReports", dailyReports);
 		model.addAttribute("training", training);

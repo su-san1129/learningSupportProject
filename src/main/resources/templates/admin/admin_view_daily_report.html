@@ -56,7 +56,7 @@
           <div class="panel-heading">
             <div class="panel-title">受講生</div>
           </div>
-          <div class="panel-body">
+          <div class="panel-body" th:if="${training.studentList.size() != 0}">
             <form method="POST" th:action="@{'/admin/view_daily_report/'+ ${training.id} }" class="form-horizontal " id="viewDailyReportForm">
               <div class="form-group">
                 <div class="col-sm-12">
@@ -66,6 +66,9 @@
                 </div>
               </div>
             </form>
+          </div>
+          <div class="panel-body text-center" th:if="${training.studentList.size() == 0}">
+            受講生がいません。
           </div>
         </div>
       </div>
@@ -111,8 +114,6 @@
                     <br />
                     <pre th:text="${dailyReport.detailIntelligibility}">
 ポリモーフィズムの概念(同じ操作で違う振る舞いというもの)がとても難しく感じました。
-
-
 										</pre>
                   </div>
                 </div>

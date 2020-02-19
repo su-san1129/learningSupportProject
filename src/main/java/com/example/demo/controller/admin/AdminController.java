@@ -105,8 +105,10 @@ public class AdminController {
 			BeanUtils.copyProperties( adminService.showAdminIncludeCompany(id), form);
 			model.addAttribute("adminRegisterForm", form);
 		}
-		// 運営管理者がもつ企業一覧(バリデーション時にデータが消えることを防ぐため、フォームに持たせない)
-		// adminRegisterFormではなく、adminのドメインをviewに渡せばSQLの発行回数は減らせそう。
+		/* ========================================================================================
+		 * 運営管理者がもつ企業一覧(バリデーション時にデータが消えることを防ぐため、フォームに持たせない)
+		 * adminRegisterFormではなく、adminのドメインをviewに渡せばSQLの発行回数は減らせそう。
+		 * ========================================================================================*/
 		model.addAttribute("adminHasComnpanies", adminService.showAdminHasCompanies(id));
 		// 全企業情報
 		model.addAttribute("companies", adminService.showCompanies());

@@ -12,7 +12,6 @@ import com.example.demo.domain.DailyReport;
 import com.example.demo.form.DailyReportForm;
 import com.example.demo.repository.DailyReportRepository;
 import com.example.demo.security.student.LoginStudent;
-import com.example.demo.controller.StudentController;
 
 /**
  * 日報を操作するサービスクラス.

@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +29,12 @@ import com.example.demo.service.DailyReportService;
 import com.example.demo.service.StudentService;
 import com.example.demo.service.TrainingService;
 
+/**
+ * 受講生の情報を扱うコントローラー.
+ * 
+ * @author takahiro.suzuki
+ *
+ */
 @Controller
 @RequestMapping("/students")
 public class StudentController {
@@ -102,7 +109,7 @@ public class StudentController {
 	}
 
 	@PostMapping("/register/finish")
-	public String registerFinish(StudentRegisterForm form) {
+	public String registerFinish(StudentRegisterForm form) throws SQLException {
 		String password = (String) session.getAttribute("password");
 		form.setPassword(password);
 		form.setCompanyId(1);
@@ -111,19 +118,32 @@ public class StudentController {
 		return "redirect:/students/register_finish";
 	}
 
+	/**
+	 * 研修リストを表示する.
+	 * 
+	 * @param model モデル
+	 * @return 研修ページ
+	 */
 	@GetMapping("/training_list")
-	public String trainingList(Model model) {
-		List<Training> trainingList = trainingService.showAllTraining();
+	public String trainingList(Model model, @AuthenticationPrincipal LoginStudent loginStudent) {
+		List<Training> trainingList = trainingService.showTrainingListByStudentId(loginStudent.getStudent().getId());
 		model.addAttribute("trainings", trainingList);
 		return "student/student_training_list";
 	}
 
 	@GetMapping("/view_daily_report/{trainingId}")
-	public String index(@PathVariable Integer trainingId, Model model) {
+	public String index(@PathVariable Integer trainingId, Model model, @AuthenticationPrincipal LoginStudent loginStudent) {
 		// 研修ID
 		model.addAttribute("trainingId", trainingId);
+		// 受講生ID
+		Integer studentId = loginStudent.getStudent().getId();
 		// 日報リスト
-		model.addAttribute("dailyReportList", dailyReportService.showDailyReportByTrainingId(trainingId));
+		model.addAttribute("dailyReports"
+				, dailyReportService.showDailyReportByStudentIdANDTrainingId(studentId, trainingId));
+		// 理解度に表示するデータ
+		model.addAttribute("intelligibilityForm", intelligibilityForm());
+		// 講師評価に表示するデータ
+		model.addAttribute("aboutInstructorForm", aboutInstructorForm());
 		return "student/student_view_daily_report";
 	}
 

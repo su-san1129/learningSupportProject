@@ -3,7 +3,7 @@ package com.example.demo.repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.RowMapper;
+//import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -19,12 +19,12 @@ public class TrainingStudentRepository {
 	
 	private final Logger LOGGER = LoggerFactory.getLogger(TrainingStudentRepository.class);
 	
-	private final RowMapper<TrainingStudent> TS_ROWMAPPER = (rs, i) -> {
-		Integer id = rs.getInt("id");
-		Integer trainingId = rs.getInt("training_id");
-		Integer studentId = rs.getInt("student_id");
-		return new TrainingStudent(id, trainingId, studentId);
-	};
+//	private final RowMapper<TrainingStudent> TS_ROWMAPPER = (rs, i) -> {
+//		Integer id = rs.getInt("id");
+//		Integer trainingId = rs.getInt("training_id");
+//		Integer studentId = rs.getInt("student_id");
+//		return new TrainingStudent(id, trainingId, studentId);
+//	};
 
 	/**
 	 * 研修に受講生を保存.

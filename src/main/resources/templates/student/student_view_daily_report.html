@@ -39,36 +39,7 @@
               <div class="form-group">
                 <div class="col-sm-12">
                   <select class="form-control">
-                    <option selected="selected">2016/07/01</option>
-                    <option>2016/07/02</option>
-                    <option>2016/07/03</option>
-                    <option>2016/07/04</option>
-                    <option>2016/07/05</option>
-                    <option>2016/07/06</option>
-                    <option>2016/07/07</option>
-                    <option>2016/07/08</option>
-                    <option>2016/07/09</option>
-                    <option>2016/07/10</option>
-                    <option>2016/07/01</option>
-                    <option>2016/07/02</option>
-                    <option>2016/07/03</option>
-                    <option>2016/07/04</option>
-                    <option>2016/07/05</option>
-                    <option>2016/07/06</option>
-                    <option>2016/07/07</option>
-                    <option>2016/07/08</option>
-                    <option>2016/07/09</option>
-                    <option>2016/07/10</option>
-                    <option>2016/07/01</option>
-                    <option>2016/07/02</option>
-                    <option>2016/07/03</option>
-                    <option>2016/07/04</option>
-                    <option>2016/07/05</option>
-                    <option>2016/07/06</option>
-                    <option>2016/07/07</option>
-                    <option>2016/07/08</option>
-                    <option>2016/07/09</option>
-                    <option>2016/07/10</option>
+                    <option th:each="dailyReport:${dailyReports}" th:text="${dailyReport.date}">2016/07/01</option>
                   </select>
                 </div>
               </div>
@@ -77,15 +48,15 @@
         </div>
       </div>
       <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7">
-        <div class="well">
-          <form method="post" action="register_daily_report.html">
+        <div class="well" th:each="dailyReport:${dailyReports}">
+          <form method="POST" action="register_daily_report.html">
             <fieldset>
               <legend>○月○日の鈴木一郎さんの日報</legend>
               <div class="form-group">
                 <div class="row">
                   <div class="col-sm-12">
                     <label for="inputTodaysContent">学んだ内容:</label>
-                    <pre>
+                    <pre th:text="${dailyReport.content}">
 オブジェクト指向入門
 クラスとオブジェクト
 継承
@@ -100,7 +71,7 @@
                 <div class="row">
                   <div class="col-sm-12">
                     <label for="inputEmail">理解度</label>
-                    <pre>
+                    <pre th:text="${intelligibilityForm.get(dailyReport.intelligibility)}">
 概ね理解できた
 										</pre>
                   </div>
@@ -111,7 +82,7 @@
                   <div class="col-sm-12">
                     <label for="inputTodaysIntelligibilityDetail">理解度(詳細):</label>
                     <br />
-                    <pre>
+                    <pre th:text="${dailyReport.detailIntelligibility}">
 ポリモーフィズムの概念(同じ操作で違う振る舞いというもの)がとても難しく感じました。
 
 

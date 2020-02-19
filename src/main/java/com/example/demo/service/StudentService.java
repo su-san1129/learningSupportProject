@@ -1,9 +1,12 @@
 package com.example.demo.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,8 +38,9 @@ public class StudentService {
 	 * 管理者の登録を行う.
 	 * 
 	 * @param form フォーム
+	 * @throws SQLException 
 	 */
-	public void studentSave(StudentRegisterForm form) {
+	public void studentSave(StudentRegisterForm form) throws SQLException {
 		Student student = new Student();
 		BeanUtils.copyProperties(form, student);
 		student.setPassword(encoder.encode(student.getPassword()));
@@ -47,8 +51,9 @@ public class StudentService {
 	 * 運営管理者が受講生をインポートした際に利用する.
 	 * 受講生と、研修テーブルをインサート
 	 * @param student 受講生
+	 * @throws SQLException 
 	 */
-	public void studentSaveByStudent(Student student, Integer trainingId) {
+	public void studentSaveByStudent(Student student, Integer trainingId) throws PSQLException, DuplicateKeyException {
 		student.setPassword(encoder.encode(student.getPassword()));
 		Integer studentId = studentRepository.save(student);
 		// 研修と受講生の中間テーブルを作成

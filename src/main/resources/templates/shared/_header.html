@@ -28,6 +28,7 @@
           class="navbar-link">ログアウト</a>
       </p>
       <p sec:authorize="hasRole('ROLE_STUDENT')" class="navbar-text navbar-right">
+        <span class="alert alert-success"><span sec:authentication="principal.student.name"></span>さんとしてログインしています</span>
         <a href="admin_login.html" th:href="@{/students/login}" class="navbar-link">パスワード変更</a> <a href="student_login.html" th:href="@{/students/logout}"
           class="navbar-link">ログアウト</a>
       </p>

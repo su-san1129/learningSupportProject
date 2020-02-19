@@ -35,7 +35,7 @@ public class StudentSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.formLogin()
 				.loginPage("/students/login")
 				.loginProcessingUrl("/students/studentLogin")
-				.defaultSuccessUrl("/students/training_list", false)
+				.defaultSuccessUrl("/students/training_list", true)
 				.usernameParameter("email")
 				.passwordParameter("password");
 		http.logout()

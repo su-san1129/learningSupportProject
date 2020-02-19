@@ -3,10 +3,12 @@ package com.example.demo.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.postgresql.util.PSQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -71,7 +73,7 @@ public class StudentRepository {
 		return template.query(sql.toString(), param, STUDENT_ROWMAPPER);
 	}
 
-	public Integer save(Student student) {
+	public Integer save(Student student) throws PSQLException, DuplicateKeyException{
 		SqlParameterSource param = new BeanPropertySqlParameterSource(student);
 		StringBuilder sql = new StringBuilder();
 		if (student.getId() == null) {

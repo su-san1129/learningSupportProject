@@ -37,6 +37,12 @@ public class AdminCompanyController {
 		return new CompanyMemberForm();
 	}
 
+	/**
+	 * 企業リストを表示する.
+	 * 
+	 * @param model モデル
+	 * @return 企業リスト
+	 */
 	@GetMapping("/company_list")
 	public String companyList(Model model) {
 		model.addAttribute("companies", companyService.showAllCompany());

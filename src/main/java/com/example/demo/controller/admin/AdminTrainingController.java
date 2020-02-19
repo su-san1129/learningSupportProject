@@ -13,8 +13,10 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -54,10 +56,10 @@ public class AdminTrainingController {
 
 	@Autowired
 	private CompanyService companyService;
-	
+
 	@Autowired
 	private StudentService studentService;
-	
+
 	@Autowired
 	private HttpSession session;
 
@@ -74,9 +76,8 @@ public class AdminTrainingController {
 	 * @return 研修受講生
 	 */
 	@RequestMapping("/training_import_students/{trainingId}")
-	public String trainingImportStudents(@PathVariable Integer trainingId
-			, @RequestParam(required = false) List<Student> students
-			, Model model) {
+	public String trainingImportStudents(@PathVariable Integer trainingId,
+			@RequestParam(required = false) List<Student> students, Model model) {
 		if (students != null) {
 			model.addAttribute("students", students);
 		}
@@ -136,7 +137,7 @@ public class AdminTrainingController {
 			model.addAttribute("fileInputError", "ファイルの読み込みに失敗しました。");
 			e.printStackTrace();
 		} catch (SQLException e) {
-			model.addAttribute("noCompanyError", tryCount+"行目:企業が存在しませんでした");
+			model.addAttribute("noCompanyError", tryCount + "行目:企業が存在しませんでした");
 			students = null;
 			e.printStackTrace();
 		}
@@ -199,9 +200,10 @@ public class AdminTrainingController {
 		trainingService.trainingSave(form);
 		return "redirect:/admin/training_list";
 	}
-	
+
 	/**
 	 * 受講生の保存を行う.
+	 * 
 	 * @param flash フラッシュスコープ
 	 * @param model モデル
 	 * @return 研修リスト
@@ -210,17 +212,31 @@ public class AdminTrainingController {
 	public String importInsertStudent(Integer trainingId, RedirectAttributes flash, Model model) {
 		@SuppressWarnings("unchecked")
 		List<Student> students = (List<Student>) session.getAttribute("students");
-		if(students != null) {
-			students.forEach(student -> {
-				if(student.getKana() == null) {
+		int count = 2;
+		if (students != null) {
+			for (Student student : students) {
+				if (student.getKana() == null) {
 					student.setKana("ふりがな");
 				}
-				studentService.studentSaveByStudent(student, trainingId);
-			});
+				try {
+					studentService.studentSaveByStudent(student, trainingId);
+					count++;
+				} catch (PSQLException e) {
+					e.printStackTrace();
+					System.out.println(e.getErrorCode());
+					System.out.println("PSQLException");
+				} catch (DuplicateKeyException e2) {
+					String str = e2.getRootCause().getMessage();
+					int index = str.indexOf("詳細: ");
+					String error = str.substring(index + 6);
+					model.addAttribute("duplicateError", count+"行目:"+error);
+					return trainingImportStudents(trainingId, students, model);
+				}
+			}
 		}
 		session.removeAttribute("students");
 		flash.addFlashAttribute("successInsert", "受講生の登録が完了しました");
 		return trainingList(model);
-		
+
 	}
 }

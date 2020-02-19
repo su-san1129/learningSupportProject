@@ -63,7 +63,10 @@
                       <button type="button" class="close" data-dismiss="alert" aria-label="閉じる"><span aria-hidden="true">×</span></button>
                       <strong>Error</strong>：　[[ ${fileError} ]]
                     </div>
-                    <div class="control-label" style="color: red" for="inputError">4行目：メールアドレスが重複しています</div>
+                    <div th:if="${duplicateError}" class="alert alert-danger alert-dismissible" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="閉じる"><span aria-hidden="true">×</span></button>
+                      <strong>Error</strong>：　[[ ${duplicateError} ]]
+                    </div>
                     <label for="inputLecturer">受講者情報CSVインポート:</label>
                     <input type="file" id="exampleInputFile" name="file">
                     <input type="hidden" name="trainingId" th:value="${training.id}" />
