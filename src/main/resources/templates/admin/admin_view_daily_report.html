@@ -32,37 +32,18 @@
     <div class="row">
       <!-- search form -->
       <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5">
-        <div class="panel panel-default" th:if="${dailyReports.size() != 0}">
-          <div class="panel-heading">
-            <div class="panel-title">日付</div>
-          </div>
-          <div class="panel-body">
-            <form method="post" action="#" class="form-horizontal">
-              <div class="form-group">
-                <div class="col-sm-12">
-                  <select class="form-control" id="dailyReportSelectForm">
-                    <option 
-                      th:each="dailyReport:${dailyReports}" 
-                      th:value="${dailyReport.id}" 
-                    >
-                      [[ ${dailyReport.date} ]]
-                    </option>
-                  </select>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="panel-title">受講生</div>
           </div>
           <div class="panel-body" th:if="${training.studentList.size() != 0}">
-            <form method="POST" th:action="@{'/admin/view_daily_report/'+ ${training.id} }" class="form-horizontal " id="viewDailyReportForm">
+            <form method="POST" th:action="@{'/admin/view_daily_report/'+ ${training.id} }" class="form-horizontal "
+              id="viewDailyReportForm">
               <div class="form-group">
                 <div class="col-sm-12">
-                  <select class="form-control" name="studentId">
-                    <option th:each="student:${training.studentList}" th:value="${student.id}" th:selected="${ postStudentId == student.id }">[[ ${student.name} ]]</option>
+                  <select class="form-control" name="studentId" size="5">
+                    <option th:each="student:${training.studentList}" th:value="${student.id}"
+                      th:selected="${ postStudentId == student.id }">[[ ${student.name} ]]</option>
                   </select>
                 </div>
               </div>
@@ -72,16 +53,32 @@
             受講生がいません。
           </div>
         </div>
+        <div class="panel panel-default" th:if="${dailyReports.size() != 0}">
+          <div class="panel-heading">
+            <div class="panel-title">日付</div>
+          </div>
+          <div class="panel-body">
+            <form method="post" action="#" class="form-horizontal">
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <select class="form-control" id="dailyReportSelectForm" size="5">
+                    <option th:each="dailyReport:${dailyReports}" th:value="${dailyReport.id}">
+                      [[ ${dailyReport.date} ]]
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
       </div>
       <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7 text-center" th:if="${dailyReports.size() == 0}">
         <div class="well">表示するデータがありません。</div>
       </div>
       <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7">
-        <div class="well showDailyReport" 
-          th:each="dailyReport,status:${dailyReports}" 
-          th:id="'dailyReport'+${dailyReport.id}"
-          th:classappend="${status.first} ? 'showDaily' : 'hideDaily'"
-        >
+        <div class="well showDailyReport" th:each="dailyReport,status:${dailyReports}"
+          th:id="'dailyReport'+${dailyReport.id}" th:classappend="${status.first} ? 'showDaily' : 'hideDaily'">
           <form method="post" action="register_daily_report.html" th:action="@{'/'+ ${training.id}}">
             <fieldset>
               <legend>
@@ -149,10 +146,10 @@
       </div>
     </div>
 
-  </!DOCTYPE>
-  <div th:replace="shared/_footer"></div>
-  <script th:src="@{/js/dailyReport.js}" src="../../static/js/dailyReport.js"></script>
- 
+    </!DOCTYPE>
+    <div th:replace="shared/_footer"></div>
+    <script th:src="@{/js/dailyReport.js}" src="../../static/js/dailyReport.js"></script>
+
 </body>
 
 </html>

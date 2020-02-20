@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.domain.Student;
 import com.example.demo.domain.Training;
 import com.example.demo.form.TrainingRegisterForm;
+import com.example.demo.repository.StudentRepository;
 import com.example.demo.repository.TrainingRepository;
 
 /**
@@ -23,6 +25,9 @@ public class TrainingService {
 	
 	@Autowired
 	private TrainingRepository trainingRepository;
+	
+	@Autowired
+	private StudentRepository studentRepository;
 	
 	/**
 	 * 研修情報を保存.
@@ -72,7 +77,15 @@ public class TrainingService {
 	 * @param companyId 企業ID
 	 * @return 企業IDで検索された研修情報
 	 */
-	public List<Training> showTrainigListByCompanyId(Integer companyId){
+	public List<Training> showTrainingListByCompanyId(Integer companyId){
 		return trainingRepository.findByCompanyId(companyId);
+	}
+	
+	public Training showTrainingByCompanyId(Integer trainingId, Integer companyId){
+		List<Student> students = studentRepository.findByTrainingIdAndCompanyId(trainingId, companyId);
+		Training training = trainingRepository.load(trainingId);
+		training.setStudentList(students);
+		return training;
+		
 	}
 }

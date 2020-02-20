@@ -124,7 +124,7 @@ insert into students (id, name, kana, email, password, company_id) values (28, '
 insert into students (id, name, kana, email, password, company_id) values (29, 'Myrwyn', 'Abdel', 'akornes8@google.ru', 'tbyvDIgU3cF', 9);
 insert into students (id, name, kana, email, password, company_id) values (30, 'Luther', 'Codi', 'cchattey9@tmall.com', 'mpKsTzp', 10);
 
--- 企業と受講生の中間テーブル
+-- 研修と受講生の中間テーブル
 insert into training_student (training_id, student_id) values (1, 1);
 insert into training_student (training_id, student_id) values (1, 2);
 insert into training_student (training_id, student_id) values (1, 3);

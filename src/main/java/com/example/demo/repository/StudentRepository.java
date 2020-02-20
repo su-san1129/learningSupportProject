@@ -19,15 +19,22 @@ import com.example.demo.domain.Company;
 import com.example.demo.domain.Student;
 import com.example.demo.domain.TrainingStudent;
 
+/**
+ * 受講生を扱うリポジトリ.
+ * 
+ * @author takahiro.suzuki
+ *
+ */
 @Repository
 public class StudentRepository {
 
 	@Autowired
 	private NamedParameterJdbcTemplate template;
 
-	// ロギング処理
+	/** ロギング処理 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdminRepository.class);
 
+	/** ローマッパー */
 	private final RowMapper<Student> STUDENT_ROWMAPPER = (rs, i) -> {
 		Integer id = rs.getInt("id");
 		String name = rs.getString("name");
@@ -40,11 +47,23 @@ public class StudentRepository {
 		return new Student(id, name, kana, email, password, companyId, company, trainingList);
 	};
 
+	/**
+	 * 全件検索.
+	 * 
+	 * @return 全件検索結果
+	 */
 	public List<Student> findAll() {
 		String sql = "SELECT * FROM students ORDER BY id";
 		return template.query(sql, STUDENT_ROWMAPPER);
 	}
 
+	/**
+	 * メールアドレスで受講生を検索.
+	 * 
+	 * Securityのユーザー認証で使う
+	 * @param email メールアドレス
+	 * @return 受講生情報
+	 */
 	public Student findByEmail(String email) {
 		try {
 			String sql = "SELECT * FROM students WHERE email = :email";
@@ -56,6 +75,11 @@ public class StudentRepository {
 		}
 	}
 
+	/**
+	 * 研修IDで受講生を検索.
+	 * @param trainingId 受講生ID
+	 * @return 受講生リスト
+	 */
 	public List<Student> findByTrainingId(Integer trainingId) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT ");
@@ -71,7 +95,38 @@ public class StudentRepository {
 		SqlParameterSource param = new MapSqlParameterSource().addValue("trainingId", trainingId);
 		return template.query(sql.toString(), param, STUDENT_ROWMAPPER);
 	}
+	
+	/**
+	 * 企業、研修IDにて受講生を検索.
+	 * 
+	 * @param trainingId 研修ID
+	 * @param companyId 企業ID
+	 * @return 受講生一覧
+	 */
+	public List<Student> findByTrainingIdAndCompanyId(Integer trainingId, Integer companyId) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT ");
+		sql.append("s.id, name, kana, email, password, company_id ");
+		sql.append("FROM ");
+		sql.append("students s ");
+		sql.append("JOIN ");
+		sql.append("training_student ts ");
+		sql.append("ON ");
+		sql.append("s.id = ts.student_id ");
+		sql.append("WHERE ");
+		sql.append("ts.training_id = :trainingId AND s.company_id = :companyId ");
+		SqlParameterSource param = new MapSqlParameterSource().addValue("trainingId", trainingId).addValue("companyId", companyId);
+		return template.query(sql.toString(), param, STUDENT_ROWMAPPER);
+	}
 
+	/**
+	 * 受講生情報の保存.
+	 * 
+	 * 重複キーエラーが出た場合は、エラーを投げる
+	 * @param student 受講生
+	 * @return 受講生のID
+	 * @throws DuplicateKeyException 重複キーエラー
+	 */
 	public Integer save(Student student) throws DuplicateKeyException{
 		SqlParameterSource param = new BeanPropertySqlParameterSource(student);
 		StringBuilder sql = new StringBuilder();

@@ -39,7 +39,7 @@
             <form method="post" action="#" class="form-horizontal">
               <div class="form-group">
                 <div class="col-sm-12">
-                  <select class="form-control" id="dailyReportSelectForm">
+                  <select class="form-control" id="dailyReportSelectForm" size="5">
                     <option th:each="dailyReport:${dailyReports}" th:value="${dailyReport.id}">
                       [[ ${dailyReport.date} ]]
                     </option>

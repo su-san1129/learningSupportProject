@@ -30,7 +30,7 @@ public class DailyReportRepository {
 
 	/** 日報のローマッパー */
 	private final RowMapper<DailyReport> DAILY_REPORT_ROWMAPPER = (rs, i) -> {
-		
+
 		// 日報のrs
 		Integer id = rs.getInt("id");
 		LocalDate date = rs.getDate("date").toLocalDate();
@@ -41,7 +41,7 @@ public class DailyReportRepository {
 		String detailIntelligibility = rs.getString("detail_intelligibility");
 		Integer aboutInstructor = rs.getInt("about_instructor");
 		String question = rs.getString("question");
-		
+
 		// 受講生リスト
 		String name = rs.getString("name");
 		String kana = rs.getString("kana");
@@ -49,11 +49,10 @@ public class DailyReportRepository {
 		String password = rs.getString("password");
 		Integer companyId = rs.getInt("company_id");
 		Student student = new Student(studentId, name, kana, email, password, companyId, null, null);
-		
-		/* 日報のインスタンスを返す. 
-		 * 研修インスタンスは情報量が多いため、findしたデータを持たせた。
-		 * 処理が重くなるようであればSQLで出力する予定。
-		 * */
+
+		/*
+		 * 日報のインスタンスを返す. 研修インスタンスは情報量が多いため、findしたデータを持たせた。 処理が重くなるようであればSQLで出力する予定。
+		 */
 		return new DailyReport(id, date, trainingId, studentId, content, intelligibility, detailIntelligibility,
 				aboutInstructor, question, trainingRepository.load(trainingId), student);
 	};
@@ -120,20 +119,23 @@ public class DailyReportRepository {
 		SqlParameterSource paramMap = new MapSqlParameterSource().addValue("trainingId", id);
 		return template.query(sql.toString(), paramMap, DAILY_REPORT_ROWMAPPER);
 	}
-	
+
 	/**
-	 * 受講生Idで日報を検索
-	 * @param id 受講生ID
-	 * @return 日報リスト
+	 * 受講生Idで日報を検索.
+	 * 
+	 * @param studentId  受講生ID
+	 * @param trainingId 研修ID
+	 * @return 受講生リスト
 	 */
 	public List<DailyReport> findByStudentIdANDTrainingId(Integer studentId, Integer trainingId) {
 		StringBuilder sql = new StringBuilder();
+		SqlParameterSource paramMap = null;
 		sql.append("SELECT * FROM daily_reports d ");
 		sql.append("LEFT OUTER JOIN students s ");
 		sql.append("ON d.student_id = s.id ");
 		sql.append("WHERE d.student_id = :studentId AND d.training_id = :trainingId ");
 		sql.append("ORDER BY date ");
-		SqlParameterSource paramMap = new MapSqlParameterSource().addValue("studentId", studentId).addValue("trainingId", trainingId);
+		paramMap = new MapSqlParameterSource().addValue("studentId", studentId).addValue("trainingId", trainingId);
 		LOGGER.info("日報を受講生IDで検索しました");
 		return template.query(sql.toString(), paramMap, DAILY_REPORT_ROWMAPPER);
 	}
