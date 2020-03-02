@@ -56,7 +56,7 @@ public class AdminService {
 	public void adminSave(AdminRegisterForm form) {
 		Admin admin = new Admin();
 		BeanUtils.copyProperties(form, admin);
-		admin.setPassword(encoder.encode(admin.getPassword()));
+		admin.setPassword(encoder.encode(form.getPassword()));
 		adminReposiory.save(admin);
 	}
 

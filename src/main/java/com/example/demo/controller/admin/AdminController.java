@@ -22,6 +22,12 @@ import com.example.demo.domain.AdminResponsibleCompany;
 import com.example.demo.form.AdminRegisterForm;
 import com.example.demo.service.AdminService;
 
+/**
+ * 運営管理者を扱うコントローラー.
+ * 
+ * @author takahiro.suzuki
+ *
+ */
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -52,6 +58,13 @@ public class AdminController {
 		return "admin/admin_login";
 	}
 
+	/**
+	 * 登録ページ.
+	 * 
+	 * @param form フォーム
+	 * @param model モデル
+	 * @return 登録ページ
+	 */
 	@RequestMapping("/register")
 	public String toRegisterAdmin(AdminRegisterForm form, Model model) {
 		if (form != null) {
@@ -63,6 +76,14 @@ public class AdminController {
 		return "admin/admin_register";
 	}
 
+	/**
+	 * 運営管理者の登録.
+	 * 
+	 * @param form フォーム
+	 * @param result エラーチェック
+	 * @param model モデル
+	 * @return 運営管理者の登録確認ページ
+	 */
 	@RequestMapping("/registerAdmin")
 	public String registerAdmin(@Validated AdminRegisterForm form, BindingResult result, Model model) {
 		if (result.hasErrors()) {
@@ -72,32 +93,53 @@ public class AdminController {
 			result.rejectValue("password", "", "パスワードが一致しませんでした。");
 			return toRegisterAdmin(form, model);
 		}
-		session.setAttribute("password", form.getPassword());
+		session.setAttribute("adminPassword", form.getPassword());
 		return "admin/admin_register_confirm";
 	}
 
-	@RequestMapping("/register_confirm")
+	/**
+	 * 登録確認ページ.
+	 * 
+	 * @return 登録完了ページ
+	 */
+	@PostMapping("/register_confirm")
 	public String toRegisterAdminConfirm() {
 		return "admin/admin_register_confirm";
 	}
 
-	@RequestMapping("/register_finish")
+	/**
+	 * 登録完了ページ.
+	 * 
+	 * @param form フォーム
+	 * @return 運営管理者一覧ページ
+	 */
+	@PostMapping("/register_finish")
 	public String registerFinish(AdminRegisterForm form) {
-		String password = (String) session.getAttribute("password");
+		String password = (String) session.getAttribute("adminPassword");
 		form.setPassword(password);
-		session.removeAttribute("password");
 		adminService.adminSave(form);
-		return "redirect:/admin/register_finish";
+		session.removeAttribute("adminPassword");
+		return "redirect:/admin/facility_manager_list";
 	}
 
+	/**
+	 * 印刷ページ.
+	 * 
+	 * @return 印刷結果
+	 */
 	@RequestMapping("/print_detail")
 	public String printDetail() {
 		return "admin/admin_print_daily_report";
 	}
 
-	
-	
-
+	/**
+	 * 企業担当者を登録するページ.
+	 * 
+	 * @param id ID
+	 * @param model モデル
+	 * @param form フォーム
+	 * @return 企業担当者リスト
+	 */
 	@RequestMapping("/facility_manager_detail/{id}")
 	public String facilityManagerDetail(@PathVariable Integer id,Model model, AdminRegisterForm form) {
 		if(form.getName() == null) {

@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.domain.StudentImpression;
 import com.example.demo.domain.WeeklyReport;
 
 /**
@@ -27,16 +28,18 @@ public class WeeklyReportRepository {
 	@Autowired
 	private NamedParameterJdbcTemplate template;
 	
+	/** ロギング処理 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(WeeklyReportRepository.class);
 	
-	
+	/** ローマッパー */
 	private final RowMapper<WeeklyReport> WEEKLY_REPORT_ROWMAPPER = (rs, i) -> {
 		 Integer id = rs.getInt("id");
 		 LocalDate startDate = rs.getDate("start_date").toLocalDate();
 		 String instructorName = rs.getString("instructor_name");
 		 String content = rs.getString("content");
 		 Integer trainingId = rs.getInt("training_id");
-		 return new WeeklyReport(id, startDate, instructorName, content, trainingId);
+		 List<StudentImpression> studentImpressionList = null;
+		 return new WeeklyReport(id, startDate, instructorName, content, trainingId, studentImpressionList);
 	};
 	
 	/**

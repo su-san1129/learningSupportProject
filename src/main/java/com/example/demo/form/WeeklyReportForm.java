@@ -1,30 +1,28 @@
-package com.example.demo.domain;
+package com.example.demo.form;
 
 import java.time.LocalDate;
-import java.util.List;
 
-public class WeeklyReport {
+
+public class WeeklyReportForm {
 
 	private Integer id;
 	private LocalDate startDate;
 	private String instructorName;
 	private String content;
 	private Integer trainingId;
-	private List<StudentImpression> studentImpressionList;
 
-	public WeeklyReport() {
+	public WeeklyReportForm() {
 		super();
 	}
 
-	public WeeklyReport(Integer id, LocalDate startDate, String instructorName, String content, Integer trainingId,
-			List<StudentImpression> studentImpressionList) {
+	public WeeklyReportForm(Integer id, LocalDate startDate, String instructorName, String content,
+			Integer trainingId) {
 		super();
 		this.id = id;
 		this.startDate = startDate;
 		this.instructorName = instructorName;
 		this.content = content;
 		this.trainingId = trainingId;
-		this.studentImpressionList = studentImpressionList;
 	}
 
 	public Integer getId() {
@@ -67,19 +65,10 @@ public class WeeklyReport {
 		this.trainingId = trainingId;
 	}
 
-	public List<StudentImpression> getStudentImpressionList() {
-		return studentImpressionList;
-	}
-
-	public void setStudentImpressionList(List<StudentImpression> studentImpressionList) {
-		this.studentImpressionList = studentImpressionList;
-	}
-
 	@Override
 	public String toString() {
-		return "WeeklyReport [id=" + id + ", startDate=" + startDate + ", instructorName=" + instructorName
-				+ ", content=" + content + ", trainingId=" + trainingId + ", studentImpressionList="
-				+ studentImpressionList + "]";
+		return "WeeklyReportForm [id=" + id + ", startDate=" + startDate + ", instructorName=" + instructorName
+				+ ", content=" + content + ", trainingId=" + trainingId + "]";
 	}
 
 }
